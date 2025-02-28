@@ -1,0 +1,27 @@
+<app-auth-layout>
+  <div title>Connexion</div>
+
+  <form content [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="flex flex-col gap-5">
+    <app-input label="E-mail ou nom d'utilisateur" type="text" id="email" [isInvalid]="isFieldInvalid('email')"
+      [errorMessage]="getErrorMessage('email')" formControlName="email">
+    </app-input>
+
+    <app-input label="Mot de passe" type="password" id="password" [isInvalid]="isFieldInvalid('password')"
+      [errorMessage]="getErrorMessage('password')" formControlName="password">
+    </app-input>
+
+    <app-button type="submit" variant="submit" [disabled]="loginForm.invalid || isLoading" [isLoading]="isLoading"
+      [fullWidth]="true">
+      Se connecter
+    </app-button>
+
+    <div class="text-red-500 text-center text-sm mt-2" *ngIf="errorMessage">
+      {{ errorMessage }}
+    </div>
+
+    <div class="text-center mt-4">
+      <p>Vous n'avez pas de compte ? <a routerLink="/register" class="text-blue-600 hover:text-blue-800">S'inscrire</a>
+      </p>
+    </div>
+  </form>
+</app-auth-layout>
