@@ -1,0 +1,12 @@
+<div class="flex flex-col w-full">
+  <label [for]="id" class="mb-1 font-normal text-base" [class.text-red-500]="isInvalid">
+    {{ label }}
+  </label>
+  <input [type]="type" [id]="id" [placeholder]="placeholder" [required]="required" [disabled]="disabled" [value]="value"
+    (input)="onInputChange($event)"
+    class="w-full h-10 rounded-md border border-gray-300 px-3 focus:outline-none focus:border-black"
+    [class.border-red-500]="isInvalid">
+  <div *ngIf="isInvalid && errorMessage" class="text-red-500 text-xs mt-1">
+    {{ errorMessage }}
+  </div>
+</div>

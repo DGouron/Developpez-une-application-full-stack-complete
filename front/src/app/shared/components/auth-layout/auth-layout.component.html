@@ -1,0 +1,27 @@
+<div class="flex flex-col min-h-screen">
+  <!-- Barre supérieure avec logo -->
+  <div class="h-[94px] border-b border-black flex items-center px-6">
+    <img src="/assets/logo_p6.png" alt="logo" class="w-[140px] h-[81px]" />
+  </div>
+
+  <!-- Contenu principal -->
+  <div class="flex-1 flex flex-col p-5">
+    <div class="max-w-md w-full mx-auto my-auto p-8 rounded-lg shadow-md bg-white">
+      <!-- En-tête avec flèche et titre -->
+      <div class="flex items-center mb-8">
+        <div class="cursor-pointer mr-4" (click)="goToHome()">
+          <svg xmlns="http://www.w3.org/2000/svg" width="39" height="39" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M19 12H5M12 19l-7-7 7-7" />
+          </svg>
+        </div>
+        <h1 class="text-2xl font-semibold text-center flex-1 pr-[39px]">
+          <ng-content select="[title]"></ng-content>
+        </h1>
+      </div>
+
+      <!-- Contenu du formulaire -->
+      <ng-content select="[content]"></ng-content>
+    </div>
+  </div>
+</div>

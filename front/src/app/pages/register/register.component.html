@@ -1,0 +1,59 @@
+<app-auth-layout>
+  <div title>Inscription</div>
+
+  <form content [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="flex flex-col gap-5">
+    <app-input label="Nom d'utilisateur" type="text" id="name" [isInvalid]="isFieldInvalid('name')"
+      [errorMessage]="getErrorMessage('name')" formControlName="name">
+    </app-input>
+
+    <app-input label="Adresse e-mail" type="email" id="email" [isInvalid]="isFieldInvalid('email')"
+      [errorMessage]="getEmailErrorMessage()" formControlName="email">
+    </app-input>
+
+    <div class="flex flex-col">
+      <app-input label="Mot de passe" type="password" id="password" [isInvalid]="isFieldInvalid('password')"
+        errorMessage="" formControlName="password">
+      </app-input>
+
+      <div class="text-red-500 text-xs mt-1"
+        *ngIf="registerForm.get('password')?.invalid && registerForm.get('password')?.touched && registerForm.get('password')?.errors?.['passwordRequirements']">
+        <p>Le mot de passe doit contenir :</p>
+        <ul class="list-disc pl-5 mt-1">
+          <li
+            [ngClass]="{'text-green-500': registerForm.get('password')?.errors?.['passwordRequirements']?.hasMinLength}">
+            Au moins 8 caractères
+          </li>
+          <li [ngClass]="{'text-green-500': registerForm.get('password')?.errors?.['passwordRequirements']?.hasNumber}">
+            Au moins un chiffre
+          </li>
+          <li
+            [ngClass]="{'text-green-500': registerForm.get('password')?.errors?.['passwordRequirements']?.hasLowerCase}">
+            Au moins une lettre minuscule
+          </li>
+          <li
+            [ngClass]="{'text-green-500': registerForm.get('password')?.errors?.['passwordRequirements']?.hasUpperCase}">
+            Au moins une lettre majuscule
+          </li>
+          <li
+            [ngClass]="{'text-green-500': registerForm.get('password')?.errors?.['passwordRequirements']?.hasSpecialChar}">
+            Au moins un caractère spécial
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <app-button type="submit" variant="submit" [disabled]="registerForm.invalid || isLoading" [isLoading]="isLoading"
+      [fullWidth]="true">
+      S'inscrire
+    </app-button>
+
+    <div class="text-red-500 text-center text-sm mt-2" *ngIf="errorMessage">
+      {{ errorMessage }}
+    </div>
+
+    <div class="text-center mt-4">
+      <p>Vous avez déjà un compte ? <a routerLink="/login" class="text-blue-600 hover:text-blue-800">Se connecter</a>
+      </p>
+    </div>
+  </form>
+</app-auth-layout>
