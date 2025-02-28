@@ -1,8 +1,7 @@
 ---
 description: "Conventions pour le projet Monde de Dev"
 globs: 
-  - "src/**/*.ts"
-  - "src/**/*.html"
+alwaysApply: false
 ---
 
 architecture:
