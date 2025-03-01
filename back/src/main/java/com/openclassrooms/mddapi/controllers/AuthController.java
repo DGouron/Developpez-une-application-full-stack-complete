@@ -5,6 +5,7 @@ import com.openclassrooms.mddapi.dtos.AuthResponseDTO;
 import com.openclassrooms.mddapi.dtos.UserResponseDTO;
 import com.openclassrooms.mddapi.entities.User;
 import com.openclassrooms.mddapi.repositories.UserRepository;
+import com.openclassrooms.mddapi.services.CookieService;
 import com.openclassrooms.mddapi.services.UserService;
 import com.openclassrooms.mddapi.utils.AuthMapper;
 import com.openclassrooms.mddapi.utils.UserMapper;
@@ -14,6 +15,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -32,6 +34,7 @@ public class AuthController {
     private final UserRepository userRepository;
     private final AuthMapper authMapper;
     private final UserMapper userMapper;
+    private final CookieService cookieService;
 
     @Operation(summary = "Get authenticated user", description = "Returns the details of the authenticated user", security = @SecurityRequirement(name = "bearerAuth"))
     @ApiResponse(responseCode = "200", description = "Authenticated user details",
@@ -49,7 +52,7 @@ public class AuthController {
         return ResponseEntity.ok(userResponseDTO);
     }
 
-    @Operation(summary = "Login user", description = "Authenticates the user and returns a JWT token")
+    @Operation(summary = "Login user", description = "Authenticates the user and returns a success message")
     @ApiResponse(responseCode = "200", description = "User authenticated successfully",
             content = @Content(mediaType = "application/json", schema = @Schema(implementation = AuthResponseDTO.class)))
     @ApiResponse(responseCode = "401", description = "Invalid username or password",
@@ -57,17 +60,19 @@ public class AuthController {
     @ApiResponse(responseCode = "500", description = "Internal server error",
             content = @Content(mediaType = "application/json", schema = @Schema(implementation = AuthResponseDTO.class)))
     @PostMapping("/login")
-    public ResponseEntity<AuthResponseDTO> login(@RequestBody AuthRequestDTO authRequest) {
+    public ResponseEntity<AuthResponseDTO> login(@RequestBody AuthRequestDTO authRequest, HttpServletResponse response) {
         try {
             String jwt = userService.authenticate(authRequest);
-            System.out.println(jwt);
             if (jwt == null) {
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                         .body(new AuthResponseDTO("Échec de l'authentification, utilisateur ou mot de passe incorrect"));
             }
 
-            AuthResponseDTO authSuccess = new AuthResponseDTO(jwt);
-            return ResponseEntity.ok(authSuccess);
+            // Stocker le token dans un cookie HTTP-only
+            cookieService.createJwtCookie(response, jwt);
+
+            // Renvoyer un message de succès sans exposer le token
+            return ResponseEntity.ok(new AuthResponseDTO("Authentification réussie"));
 
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -76,18 +81,33 @@ public class AuthController {
     }
 
     @Operation(summary = "Register a new user", description = "Registers a new user and returns a success message")
-    @ApiResponse(responseCode = "200", description = "User registered successfully",
-            content = @Content(mediaType = "application/json", schema = @Schema(implementation = AuthResponseDTO.class)))
+    @ApiResponse(responseCode = "201", description = "User registered successfully",
+            content = @Content(mediaType = "application/json", schema = @Schema(implementation = UserResponseDTO.class)))
     @ApiResponse(responseCode = "400", description = "Bad request, invalid data",
-            content = @Content(mediaType = "application/json", schema = @Schema(implementation = AuthResponseDTO.class)))
+            content = @Content(mediaType = "application/json", schema = @Schema(implementation = UserResponseDTO.class)))
     @PostMapping("/register")
-    public ResponseEntity<UserResponseDTO> register(@RequestBody AuthRequestDTO authRequestDTO) {
+    public ResponseEntity<UserResponseDTO> register(@RequestBody AuthRequestDTO authRequestDTO, HttpServletResponse response) {
         User user = authMapper.toUser(authRequestDTO);
         if (userRepository.findByEmail(user.getEmail()) != null) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
         User savedUser = userService.saveUser(user);
+        
+        // Générer un token pour l'utilisateur nouvellement enregistré
+        String jwt = userService.generateTokenForUser(savedUser);
+        
+        // Stocker le token dans un cookie HTTP-only
+        cookieService.createJwtCookie(response, jwt);
+        
         UserResponseDTO userResponseDTO = userMapper.toUserResponseDTO(savedUser);
         return ResponseEntity.status(HttpStatus.CREATED).body(userResponseDTO);
+    }
+    
+    @Operation(summary = "Logout user", description = "Clears the authentication cookie")
+    @ApiResponse(responseCode = "200", description = "User logged out successfully")
+    @PostMapping("/logout")
+    public ResponseEntity<Void> logout(HttpServletResponse response) {
+        cookieService.clearJwtCookie(response);
+        return ResponseEntity.ok().build();
     }
 }

@@ -50,6 +50,15 @@ public class UserService {
         return userRepository.save(userToSave);
     }
 
+    /**
+     * Génère un token JWT pour un utilisateur donné
+     * @param user L'utilisateur pour lequel générer le token
+     * @return Le token JWT généré
+     */
+    public String generateTokenForUser(User user) {
+        return JwtProvider.generateJwtToken(user.getEmail());
+    }
+
     public String authenticate(AuthRequestDTO authRequest) {
         try {
             // Chercher l'utilisateur par email

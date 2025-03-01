@@ -4,3 +4,5 @@ globs: *.java
 alwaysApply: true
 ---
 - Use a RequestDto and RespenseDto unique by route
+- Always update **README.md**
+- Document technical choices in **TECHNICAL-CHOICES.md** file

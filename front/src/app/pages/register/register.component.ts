@@ -1,4 +1,4 @@
-import { HttpClient, HttpErrorResponse } from "@angular/common/http";
+import { HttpErrorResponse } from "@angular/common/http";
 import { Component, OnInit } from "@angular/core";
 import {
 	AbstractControl,
@@ -8,6 +8,7 @@ import {
 	Validators,
 } from "@angular/forms";
 import { Router } from "@angular/router";
+import { AuthService } from "../../core/services/auth.service";
 
 @Component({
 	selector: "app-register",
@@ -22,7 +23,7 @@ export class RegisterComponent implements OnInit {
 	constructor(
 		private fb: FormBuilder,
 		private router: Router,
-		private http: HttpClient,
+		private authService: AuthService,
 	) {
 		this.registerForm = this.fb.group({
 			name: ["", Validators.required],
@@ -113,55 +114,26 @@ export class RegisterComponent implements OnInit {
 			this.isLoading = true;
 			this.errorMessage = "";
 
-			const userData = {
-				name: this.registerForm.value.name,
-				email: this.registerForm.value.email,
-				password: this.registerForm.value.password,
-			};
+			const name = this.registerForm.value.name;
+			const email = this.registerForm.value.email;
+			const password = this.registerForm.value.password;
 
-			this.http
-				.post("http://localhost:3002/api/auth/register", userData)
-				.subscribe({
-					next: () => {
-						// Si l'inscription réussit, connecter l'utilisateur
-						this.loginUser(userData.email, userData.password);
-					},
-					error: (error: HttpErrorResponse) => {
-						this.isLoading = false;
-						if (error.error?.message) {
-							this.errorMessage = error.error.message;
-						} else {
-							this.errorMessage =
-								"Une erreur est survenue lors de l'inscription. Veuillez réessayer.";
-						}
-					},
-				});
-		}
-	}
-
-	loginUser(email: string, password: string): void {
-		const credentials = {
-			email: email,
-			password: password,
-		};
-
-		this.http
-			.post("http://localhost:3002/api/auth/login", credentials)
-			.subscribe({
-				next: (response) => {
+			this.authService.register(name, email, password).subscribe({
+				next: () => {
 					this.isLoading = false;
-					// Rediriger l'utilisateur vers la page principale après connexion
-					this.router.navigate(["/"]);
+					// Rediriger vers la page des articles après inscription
+					this.router.navigate(["/articles"]);
 				},
 				error: (error: HttpErrorResponse) => {
 					this.isLoading = false;
 					if (error.error?.message) {
-						this.errorMessage = `Inscription réussie mais échec de connexion : ${error.error.message}`;
+						this.errorMessage = error.error.message;
 					} else {
 						this.errorMessage =
-							"Inscription réussie mais échec de connexion. Veuillez vous connecter manuellement.";
+							"Une erreur est survenue lors de l'inscription. Veuillez réessayer.";
 					}
 				},
 			});
+		}
 	}
 }

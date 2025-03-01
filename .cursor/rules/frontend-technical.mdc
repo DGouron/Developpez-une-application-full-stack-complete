@@ -5,4 +5,6 @@ alwaysApply: true
 ---
 
 - Always use **POO** and **clean code**.
-- Follow **SOLID** principles. If its possible, use clean architecture and **DDD**.
+- Follow **SOLID** principles. If its possible, use clean architecture and **Domain-Driven Development**.
+- Always add **JSDoc** and update **README.md**
+- Document technical choices in **TECHNICAL-CHOICES.md** file
