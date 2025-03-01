@@ -1,0 +1,6 @@
+---
+description: 
+globs: *.java
+alwaysApply: true
+---
+- Use a RequestDto and RespenseDto unique by route

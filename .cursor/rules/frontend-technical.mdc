@@ -1,0 +1,8 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+
+- Always use **POO** and **clean code**.
+- Follow **SOLID** principles. If its possible, use clean architecture and **DDD**.
