@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import { CanActivate, Router, UrlTree } from "@angular/router";
-import { Observable } from "rxjs";
+import { Observable, map } from "rxjs";
 import { AuthService } from "../services/auth.service";
 
 @Injectable({
@@ -17,11 +17,17 @@ export class AuthGuard implements CanActivate {
 		| Promise<boolean | UrlTree>
 		| boolean
 		| UrlTree {
-		if (this.authService.isAuthenticated()) {
-			return true;
-		}
+		// Utilisation de la méthode asynchrone pour attendre le résultat
+		// de la vérification d'authentification
+		return this.authService.isAuthenticatedAsync().pipe(
+			map((isAuthenticated) => {
+				if (isAuthenticated) {
+					return true;
+				}
 
-		// Redirect to home page if not authenticated
-		return this.router.createUrlTree(["/"]);
+				// Redirection vers la page d'accueil si non authentifié
+				return this.router.createUrlTree(["/"]);
+			}),
+		);
 	}
 }

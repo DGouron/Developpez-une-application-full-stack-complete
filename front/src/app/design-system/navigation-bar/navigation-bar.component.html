@@ -1,0 +1,8 @@
+<nav class="flex flex-col md:flex-row md:gap-4">
+  <a *ngFor="let link of links" [routerLink]="link.path" [ngClass]="{
+      'text-primary': isActive(link.path),
+      'text-black': !isActive(link.path)
+    }" class="px-4 py-2 rounded-md font-medium no-underline transition-colors">
+    {{ link.label }}
+  </a>
+</nav>

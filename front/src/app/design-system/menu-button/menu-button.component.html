@@ -1,0 +1,11 @@
+<button (click)="onMenuClick()" class="focus:outline-none">
+  <!-- Version desktop: icône user dans un cercle -->
+  <div class="hidden md:flex items-center justify-center w-12 h-12 rounded-full bg-black/50">
+    <img src="/assets/user_icon.svg" alt="User menu" class="w-6 h-6" />
+  </div>
+
+  <!-- Version mobile: icône burger menu -->
+  <div class="md:hidden">
+    <img src="/assets/burger_menu.svg" alt="Menu" class="w-6 h-4" />
+  </div>
+</button>

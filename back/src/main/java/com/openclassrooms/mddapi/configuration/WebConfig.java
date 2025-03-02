@@ -4,9 +4,14 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-@Configuration
+/*
+ * Cette configuration a été désactivée pour éviter les conflits avec la configuration CORS
+ * dans SecurityConfig.java qui est plus adaptée pour l'authentification par cookies.
+ */
+// @Configuration
 public class WebConfig implements WebMvcConfigurer {
 
+    /*
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
@@ -16,4 +21,5 @@ public class WebConfig implements WebMvcConfigurer {
                 .allowCredentials(true)
                 .maxAge(3600);
     }
+    */
 } 

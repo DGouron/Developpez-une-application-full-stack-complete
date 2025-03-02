@@ -8,3 +8,5 @@ alwaysApply: true
 - Follow **SOLID** principles. If its possible, use clean architecture and **Domain-Driven Development**.
 - Always add **JSDoc** and update **README.md**
 - Document technical choices in **TECHNICAL-CHOICES.md** file
+- If you see comment or JSDoc write in French, translate it into english.
+- For reusability, we push color into our **tailwind config**.

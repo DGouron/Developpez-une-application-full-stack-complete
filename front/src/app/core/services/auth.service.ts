@@ -1,12 +1,26 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Router } from "@angular/router";
-import { BehaviorSubject, Observable, tap } from "rxjs";
+import {
+	BehaviorSubject,
+	Observable,
+	catchError,
+	firstValueFrom,
+	map,
+	of,
+	tap,
+} from "rxjs";
 import { AppConfig } from "../config/app.config";
 
 interface AuthResponse {
 	token: string;
 	userId: string;
+}
+
+interface UserInfo {
+	id: string;
+	name: string;
+	email: string;
 }
 
 @Injectable({
@@ -15,6 +29,7 @@ interface AuthResponse {
 export class AuthService {
 	private readonly apiUrl = `${AppConfig.apiUrl}/auth`;
 	private isAuthenticatedSubject = new BehaviorSubject<boolean>(false);
+	private authStatusChecked = false;
 
 	isAuthenticated$ = this.isAuthenticatedSubject.asObservable();
 
@@ -36,6 +51,7 @@ export class AuthService {
 			.pipe(
 				tap(() => {
 					this.isAuthenticatedSubject.next(true);
+					this.authStatusChecked = true;
 				}),
 			);
 	}
@@ -54,6 +70,7 @@ export class AuthService {
 			.pipe(
 				tap(() => {
 					this.isAuthenticatedSubject.next(true);
+					this.authStatusChecked = true;
 				}),
 			);
 	}
@@ -65,29 +82,50 @@ export class AuthService {
 			.subscribe({
 				next: () => {
 					this.isAuthenticatedSubject.next(false);
+					this.authStatusChecked = true;
 					this.router.navigate(["/"]);
 				},
 				error: () => {
 					// Même en cas d'erreur, on déconnecte l'utilisateur côté client
 					this.isAuthenticatedSubject.next(false);
+					this.authStatusChecked = true;
 					this.router.navigate(["/"]);
 				},
 			});
 	}
 
 	// Vérifie si l'utilisateur est authentifié en appelant une API sécurisée
-	checkAuthStatus(): void {
-		this.http.get(`${this.apiUrl}/me`, { withCredentials: true }).subscribe({
-			next: () => {
-				this.isAuthenticatedSubject.next(true);
-			},
-			error: () => {
-				this.isAuthenticatedSubject.next(false);
-			},
-		});
+	checkAuthStatus(): Observable<boolean> {
+		// Si nous avons déjà vérifié le statut d'auth et que l'utilisateur est authentifié,
+		// nous pouvons renvoyer l'état actuel sans appeler l'API à nouveau
+		if (this.authStatusChecked) {
+			return of(this.isAuthenticatedSubject.getValue());
+		}
+
+		// Sinon, nous appelons l'API pour vérifier l'authentification
+		return this.http
+			.get<UserInfo>(`${this.apiUrl}/me`, { withCredentials: true })
+			.pipe(
+				map(() => {
+					this.isAuthenticatedSubject.next(true);
+					this.authStatusChecked = true;
+					return true;
+				}),
+				catchError(() => {
+					this.isAuthenticatedSubject.next(false);
+					this.authStatusChecked = true;
+					return of(false);
+				}),
+			);
 	}
 
+	// Méthode synchrone pour vérifier rapidement l'état d'authentification
 	isAuthenticated(): boolean {
 		return this.isAuthenticatedSubject.getValue();
+	}
+
+	// Méthode asynchrone pour vérifier l'authentification (utile pour les Guards)
+	isAuthenticatedAsync(): Observable<boolean> {
+		return this.checkAuthStatus();
 	}
 }

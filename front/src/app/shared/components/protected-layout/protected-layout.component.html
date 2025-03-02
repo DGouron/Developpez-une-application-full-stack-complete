@@ -1,0 +1,28 @@
+<div class="flex flex-col min-h-screen">
+  <!-- Header commun (desktop et mobile) -->
+  <div class="h-[62px] md:h-[94px] border-b border-black flex items-center justify-between px-6">
+    <!-- Logo -->
+    <img src="/assets/logo_p6.png" alt="logo" class="w-[92px] h-[48px] md:w-[140px] md:h-[81px]" />
+
+    <!-- Header avec navigation et menu -->
+    <app-header (menuClick)="toggleMenu()"></app-header>
+  </div>
+
+  <!-- Contenu principal -->
+  <div class="flex-1 flex flex-col p-5">
+    <div class="w-full max-w-6xl mx-auto">
+      <!-- Barre d'actions (bouton déconnexion, etc.) -->
+      <div class="flex justify-between items-center mb-6">
+        <h1 class="text-3xl font-bold">
+          <ng-content select="[title]"></ng-content>
+        </h1>
+        <ng-content select="[actions]"></ng-content>
+      </div>
+
+      <!-- Contenu de la page -->
+      <div class="bg-white shadow-md rounded-lg p-6">
+        <ng-content select="[content]"></ng-content>
+      </div>
+    </div>
+  </div>
+</div>

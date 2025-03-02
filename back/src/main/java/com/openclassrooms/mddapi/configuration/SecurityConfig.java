@@ -80,7 +80,7 @@ public class SecurityConfig {
         CorsConfiguration corsConfig = new CorsConfiguration();
         
         // Autoriser les origines spécifiques (Angular frontend)
-        corsConfig.setAllowedOrigins(Arrays.asList("http://localhost:4200"));
+        corsConfig.setAllowedOrigins(Collections.singletonList("http://localhost:4200"));
         
         // Autoriser tous les en-têtes HTTP courants
         corsConfig.setAllowedHeaders(Arrays.asList(
@@ -90,16 +90,26 @@ public class SecurityConfig {
             "Origin", 
             "X-Requested-With", 
             "Access-Control-Request-Method", 
-            "Access-Control-Request-Headers"
+            "Access-Control-Request-Headers",
+            "Cache-Control",
+            "Pragma"
         ));
         
         // Autoriser les méthodes HTTP principales
         corsConfig.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
         
-        // Exposer l'en-tête Authorization pour que le client puisse le lire
-        corsConfig.setExposedHeaders(Arrays.asList("Authorization"));
+        // Exposer les en-têtes nécessaires pour que le client puisse les lire
+        corsConfig.setExposedHeaders(Arrays.asList(
+            "Authorization",
+            "Cache-Control", 
+            "Content-Type", 
+            "Access-Control-Allow-Origin", 
+            "Access-Control-Allow-Credentials",
+            "Access-Control-Expose-Headers",
+            "Set-Cookie"
+        ));
         
-        // Autoriser les cookies
+        // Autoriser les cookies - CRUCIAL pour l'authentification basée sur les cookies
         corsConfig.setAllowCredentials(true);
         
         // Durée de mise en cache des résultats pre-flight
