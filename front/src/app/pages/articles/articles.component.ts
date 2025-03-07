@@ -1,6 +1,17 @@
+import { HttpClient } from "@angular/common/http";
 import { Component, OnInit } from "@angular/core";
 import { Router } from "@angular/router";
-import { AuthService } from "../../core/services/auth.service";
+import { AppConfig } from "../../core/config/app.config";
+
+interface Article {
+	id: string;
+	title: string;
+	content: string;
+	author: {
+		name: string;
+	};
+	createdAt: string;
+}
 
 @Component({
 	selector: "app-articles",
@@ -8,17 +19,37 @@ import { AuthService } from "../../core/services/auth.service";
 	styles: [],
 })
 export class ArticlesComponent implements OnInit {
+	articles: (Article & { createdAtDate: Date })[] = [];
+	isLoading = false;
+
 	constructor(
-		private authService: AuthService,
 		private router: Router,
+		private http: HttpClient,
 	) {}
 
 	ngOnInit(): void {
-		// Future initialization code can go here
+		this.loadArticles();
+	}
+
+	loadArticles(): void {
+		this.isLoading = true;
+		this.http.get<Article[]>(`${AppConfig.apiUrl}/articles`).subscribe({
+			next: (articles) => {
+				this.articles = articles.map((article) => ({
+					...article,
+					createdAtDate: new Date(article.createdAt),
+				}));
+				this.isLoading = false;
+			},
+			error: (error) => {
+				console.error("Error loading articles:", error);
+				this.isLoading = false;
+			},
+		});
 	}
 
 	logout(): void {
-		this.authService.logout();
+		// Future implementation needed
 	}
 
 	/**

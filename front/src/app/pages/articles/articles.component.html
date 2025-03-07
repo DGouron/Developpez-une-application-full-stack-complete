@@ -5,18 +5,22 @@
         Créer un article
       </app-button>
     </header>
-    <section class="grid grid-cols-1 md:grid-cols-2 gap-4">
-      <!-- Example article -->
-      <app-article-card title="Introduction à Angular" [createdAt]="getDate(5)" author="john doe"
-        content="Angular est un framework de développement d'applications web développé par Google. Il permet de créer des applications web dynamiques et réactives. Angular utilise TypeScript, un sur-ensemble typé de JavaScript, qui compile en JavaScript pur. Angular est utilisé par de nombreuses entreprises pour développer leurs applications web et mobiles. Il offre une structure solide pour organiser le code et facilite la maintenance des applications."></app-article-card>
 
-      <!-- Another example article -->
-      <app-article-card title="Les bases de TypeScript" [createdAt]="getDate(10)" author="jane smith"
-        content="TypeScript est un langage de programmation libre et open source développé par Microsoft qui a pour but d'améliorer et de sécuriser la production de code JavaScript. C'est un sur-ensemble syntaxique strict de JavaScript qui ajoute des fonctionnalités optionnelles à ce langage, notamment le typage statique et la programmation orientée objet basée sur des classes."></app-article-card>
+    <!-- Loading state -->
+    <div *ngIf="isLoading" class="flex justify-center items-center py-8">
+      <div class="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-gray-900"></div>
+    </div>
 
-      <!-- One more example -->
-      <app-article-card title="Tailwind CSS : le framework utilitaire" [createdAt]="getDate(2)" author="alex johnson"
-        content="Tailwind CSS est un framework CSS utilitaire qui permet de construire rapidement des interfaces utilisateur personnalisées. Contrairement à d'autres frameworks comme Bootstrap ou Material UI, Tailwind ne fournit pas de composants prédéfinis, mais plutôt des classes utilitaires qui peuvent être combinées pour créer n'importe quel design."></app-article-card>
+    <!-- Articles grid -->
+    <section *ngIf="!isLoading" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <app-article-card *ngFor="let article of articles" [title]="article.title" [content]="article.content"
+        [author]="article.author.name" [createdAt]="article.createdAtDate">
+      </app-article-card>
+
+      <!-- Message when no articles -->
+      <p *ngIf="!isLoading && articles.length === 0" class="text-center text-gray-500 col-span-2 py-8">
+        Aucun article disponible pour le moment.
+      </p>
     </section>
   </main>
 </app-protected-layout>
