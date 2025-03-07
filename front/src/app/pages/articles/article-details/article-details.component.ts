@@ -4,6 +4,7 @@ import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
 import { AppConfig } from "../../../core/config/app.config";
 import { CoreDesignSystemModule } from "../../../design-system/core-design-system.module";
+import { CommentCardComponent } from "../../../shared/components/comment-card/comment-card.component";
 import { CommentFormComponent } from "../../../shared/components/comment-form/comment-form.component";
 import { SharedModule } from "../../../shared/shared.module";
 
@@ -17,6 +18,16 @@ interface Article {
 	updatedAt: string;
 }
 
+interface Comment {
+	id: number;
+	content: string;
+	createdAt: string;
+	updatedAt: string;
+	userId: number;
+	userName: string;
+	articleId: number;
+}
+
 /**
  * Article details page component
  */
@@ -28,13 +39,16 @@ interface Article {
 		SharedModule,
 		CoreDesignSystemModule,
 		CommentFormComponent,
+		CommentCardComponent,
 	],
 	templateUrl: "./article-details.component.html",
 })
 export class ArticleDetailsComponent implements OnInit {
 	article: Article | null = null;
 	isLoading = true;
+	isLoadingComments = false;
 	errorMessage = "";
+	comments: Comment[] = [];
 
 	constructor(
 		private route: ActivatedRoute,
@@ -60,6 +74,8 @@ export class ArticleDetailsComponent implements OnInit {
 			next: (article) => {
 				this.article = article;
 				this.isLoading = false;
+				// Chargement des commentaires une fois que l'article est chargé
+				this.loadComments(id);
 			},
 			error: (error) => {
 				console.error("Error loading article:", error);
@@ -69,12 +85,30 @@ export class ArticleDetailsComponent implements OnInit {
 		});
 	}
 
+	loadComments(articleId: string): void {
+		this.isLoadingComments = true;
+		this.http
+			.get<Comment[]>(`${AppConfig.apiUrl}/comments/article/${articleId}`)
+			.subscribe({
+				next: (comments) => {
+					this.comments = comments;
+					this.isLoadingComments = false;
+				},
+				error: (error) => {
+					console.error("Error loading comments:", error);
+					this.isLoadingComments = false;
+				},
+			});
+	}
+
 	goBack(): void {
 		this.router.navigate(["/articles"]);
 	}
 
 	onCommentAdded(): void {
-		// Rechargement des commentaires ou de l'article si nécessaire
-		// Pour l'instant, on ne fait rien car nous n'avons pas encore implémenté l'affichage des commentaires
+		// Recharger les commentaires après l'ajout d'un nouveau commentaire
+		if (this.article) {
+			this.loadComments(this.article.id);
+		}
 	}
 }

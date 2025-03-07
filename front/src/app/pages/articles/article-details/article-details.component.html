@@ -46,8 +46,29 @@
         <!-- Empty section for future content -->
         <section class="py-6">
           <h2 class="text-2xl font-semibold text-black mb-6">Commentaires</h2>
-          <app-comment-form [articleId]="+article.id" (commentAdded)="onCommentAdded()">
-          </app-comment-form>
+
+          <!-- Liste des commentaires -->
+          <div *ngIf="!isLoadingComments" class="space-y-4">
+            <div *ngIf="comments.length === 0" class="text-gray-500 text-center py-4">
+              Aucun commentaire pour le moment.
+            </div>
+
+            <app-comment-card *ngFor="let comment of comments" [userName]="comment.userName"
+              [content]="comment.content">
+            </app-comment-card>
+          </div>
+
+          <!-- État de chargement des commentaires -->
+          <div *ngIf="isLoadingComments" class="flex justify-center items-center py-4">
+            <div class="animate-spin rounded-full h-6 w-6 border-t-2 border-b-2 border-gray-900"></div>
+          </div>
+
+          <!-- Formulaire d'ajout de commentaire -->
+          <div class="mb-8">
+            <app-comment-form [articleId]="+article.id" (commentAdded)="onCommentAdded()">
+            </app-comment-form>
+          </div>
+
         </section>
       </div>
     </div>
