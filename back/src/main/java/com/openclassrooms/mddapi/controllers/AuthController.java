@@ -68,10 +68,8 @@ public class AuthController {
                         .body(new AuthResponseDTO("Échec de l'authentification, utilisateur ou mot de passe incorrect"));
             }
 
-            // Stocker le token dans un cookie HTTP-only
             cookieService.createJwtCookie(response, jwt);
 
-            // Renvoyer un message de succès sans exposer le token
             return ResponseEntity.ok(new AuthResponseDTO("Authentification réussie"));
 
         } catch (Exception e) {
@@ -92,11 +90,9 @@ public class AuthController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
         User savedUser = userService.saveUser(user);
-        
-        // Générer un token pour l'utilisateur nouvellement enregistré
+
         String jwt = userService.generateTokenForUser(savedUser);
-        
-        // Stocker le token dans un cookie HTTP-only
+
         cookieService.createJwtCookie(response, jwt);
         
         UserResponseDTO userResponseDTO = userMapper.toUserResponseDTO(savedUser);

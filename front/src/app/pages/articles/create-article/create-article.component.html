@@ -20,15 +20,13 @@
         </select>
       </div>
 
-      <div class="space-y-2">
-        <input type="text" formControlName="title" placeholder="Titre de l'article"
-          class="w-full p-2 border rounded-md" />
-      </div>
+      <app-input formControlName="title" placeholder="Titre de l'article"
+        [isInvalid]="articleForm.get('title')?.invalid && articleForm.get('title')?.touched"
+        errorMessage="Le titre est requis"></app-input>
 
-      <div class="space-y-2">
-        <textarea formControlName="content" placeholder="Contenu de l'article" rows="6"
-          class="w-full p-2 border rounded-md resize-none"></textarea>
-      </div>
+      <app-textarea formControlName="content" placeholder="Contenu de l'article" [rows]="6"
+        [isInvalid]="articleForm.get('content')?.invalid && articleForm.get('content')?.touched"
+        errorMessage="Le contenu est requis"></app-textarea>
 
       <div class="flex justify-center">
         <app-button type="submit" variant="submit" [disabled]="!articleForm.valid || isLoading">

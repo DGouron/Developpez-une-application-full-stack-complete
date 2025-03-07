@@ -1,5 +1,5 @@
 import { Component, OnInit } from "@angular/core";
-import { Router } from "@angular/router";
+import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { AuthService } from "../../core/services/auth.service";
 
 @Component({
@@ -8,14 +8,36 @@ import { AuthService } from "../../core/services/auth.service";
 	styleUrls: ["./account.component.css"],
 })
 export class AccountComponent implements OnInit {
+	profileForm: FormGroup;
+	isLoading = false;
+	showPassword = false;
+
 	constructor(
+		private fb: FormBuilder,
 		private authService: AuthService,
-		private router: Router,
-	) {}
+	) {
+		this.profileForm = this.fb.group({
+			username: ["", Validators.required],
+			email: ["", [Validators.required, Validators.email]],
+			password: ["", Validators.required],
+		});
+	}
 
 	ngOnInit(): void {
-		// Vérifier l'état d'authentification
-		this.authService.checkAuthStatus();
+		// TODO: Charger les données de l'utilisateur quand l'API sera prête
+	}
+
+	togglePassword(): void {
+		this.showPassword = !this.showPassword;
+	}
+
+	onSubmit(): void {
+		if (this.profileForm.valid) {
+			this.isLoading = true;
+			// TODO: Implémenter la mise à jour du profil quand l'API sera prête
+			console.log("Données du formulaire:", this.profileForm.value);
+			this.isLoading = false;
+		}
 	}
 
 	logout(): void {
