@@ -5,6 +5,7 @@ module.exports = {
 		extend: {
 			colors: {
 				primary: "hsla(248, 55%, 59%, 1)",
+				"inline-red": "hsla(0, 83%, 35%, 1)",
 			},
 		},
 	},

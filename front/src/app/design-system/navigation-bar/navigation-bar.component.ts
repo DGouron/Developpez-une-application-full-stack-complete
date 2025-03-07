@@ -1,6 +1,10 @@
-import { Component, Input, OnInit } from "@angular/core";
+import { Component, EventEmitter, Input, Output } from "@angular/core";
 import { Router } from "@angular/router";
+import { Link } from "../../core/models/link.model";
 
+/**
+ * Interface for navigation links with path and label
+ */
 export interface NavLink {
 	path: string;
 	label: string;
@@ -11,17 +15,17 @@ export interface NavLink {
 	templateUrl: "./navigation-bar.component.html",
 	styleUrls: ["./navigation-bar.component.css"],
 })
-export class NavigationBarComponent implements OnInit {
-	@Input() links: NavLink[] = [
-		{ path: "/articles", label: "Articles" },
-		{ path: "/themes", label: "Thèmes" },
-	];
+export class NavigationBarComponent {
+	@Input() links: NavLink[] = [];
+	@Output() logoutEvent = new EventEmitter<void>();
 
 	constructor(private router: Router) {}
 
-	ngOnInit(): void {}
-
 	isActive(path: string): boolean {
 		return this.router.url === path;
+	}
+
+	logout(): void {
+		this.logoutEvent.emit();
 	}
 }

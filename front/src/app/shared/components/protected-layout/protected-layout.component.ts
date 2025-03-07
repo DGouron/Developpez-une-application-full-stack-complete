@@ -1,6 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { Router } from "@angular/router";
 import { AuthService } from "src/app/core/services/auth.service";
+import { NavLink } from "src/app/design-system/navigation-bar/navigation-bar.component";
 
 @Component({
 	selector: "app-protected-layout",
@@ -9,6 +10,10 @@ import { AuthService } from "src/app/core/services/auth.service";
 })
 export class ProtectedLayoutComponent implements OnInit {
 	menuOpen = false;
+	navLinks: NavLink[] = [
+		{ path: "/articles", label: "Articles" },
+		{ path: "/themes", label: "Thèmes" },
+	];
 
 	constructor(
 		private authService: AuthService,

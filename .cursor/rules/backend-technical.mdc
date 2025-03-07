@@ -1,7 +1,7 @@
 ---
-description: 
-globs: *.java
-alwaysApply: true
+description: Technical rules for Java backend
+globs: back/**/*
+alwaysApply: false
 ---
 - Use a RequestDto and RespenseDto unique by route
 - Always update **README.md**

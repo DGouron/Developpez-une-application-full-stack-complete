@@ -6,9 +6,19 @@ import { Component, EventEmitter, Output } from "@angular/core";
 	styleUrls: ["./menu-button.component.css"],
 })
 export class MenuButtonComponent {
-	@Output() menuClick = new EventEmitter<void>();
+	@Output() logoutEvent = new EventEmitter<void>();
+	isMenuOpen = false;
 
-	onMenuClick(): void {
-		this.menuClick.emit();
+	toggleMenu(): void {
+		this.isMenuOpen = !this.isMenuOpen;
+	}
+
+	closeMenu(): void {
+		this.isMenuOpen = false;
+	}
+
+	onLogout(): void {
+		this.logoutEvent.emit();
+		this.closeMenu();
 	}
 }

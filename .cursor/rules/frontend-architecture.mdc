@@ -1,0 +1,15 @@
+---
+description: Rules for architecture frontend
+globs: front/**/*
+alwaysApply: true
+---
+We use **clean architecture** and **Domain-Driven Development** (DDD) when its possible in our project because we are some legacy code.
+Maintain a **clear separation of concerns** between different architectural layers.
+
+## SOLID Principles
+
+- Single Responsibility Principle (SRP)
+- Open-Closed Principle (OCP)
+- Liskov Substitution Prinple (LSP)
+- Interface Segregation Principle (ISP)
+- Dependency Inversion Principle (DSP)

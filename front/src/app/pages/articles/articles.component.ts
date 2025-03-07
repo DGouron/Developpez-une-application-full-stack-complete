@@ -16,4 +16,19 @@ export class ArticlesComponent implements OnInit {
 	logout(): void {
 		this.authService.logout();
 	}
+
+	/**
+	 * Generates a date in the past by subtracting a number of days from the current date
+	 * @param daysAgo Number of days to subtract
+	 * @returns Date in the past
+	 */
+	getDate(daysAgo: number): Date {
+		const date = new Date();
+		date.setDate(date.getDate() - daysAgo);
+		return date;
+	}
+
+	createArticle(): void {
+		console.log("Créer un article");
+	}
 }

@@ -1,4 +1,6 @@
+import { CommonModule } from "@angular/common";
 import { NgModule } from "@angular/core";
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { RouterModule } from "@angular/router";
 import { DesignSystemModule } from "../design-system/design-system.module";
 import { SharedModule } from "../shared/shared.module";
@@ -16,7 +18,14 @@ import { RegisterComponent } from "./register/register.component";
 		ArticlesComponent,
 		AccountComponent,
 	],
-	imports: [SharedModule, RouterModule, DesignSystemModule],
+	imports: [
+		CommonModule,
+		RouterModule,
+		FormsModule,
+		ReactiveFormsModule,
+		DesignSystemModule,
+		SharedModule,
+	],
 	exports: [
 		HomeComponent,
 		LoginComponent,

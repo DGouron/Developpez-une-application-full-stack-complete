@@ -1,18 +1,20 @@
 <app-protected-layout>
-  <div title>Articles</div>
-
-  <div actions>
-    <button class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-md transition-colors" (click)="logout()">
-      Se déconnecter
-    </button>
-  </div>
-
   <div content>
-    <p class="text-xl text-center text-gray-600">
-      Cette page est protégée et nécessite une authentification.
-    </p>
-    <p class="text-center text-gray-500 mt-4">
-      Le contenu des articles sera ajouté ultérieurement.
-    </p>
+    <app-button (buttonClick)="createArticle()" variant="submit" class="mb-4">
+      Créer un article
+    </app-button>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <!-- Example article -->
+      <app-article-card title="Introduction à Angular" [createdAt]="getDate(5)" author="john doe"
+        content="Angular est un framework de développement d'applications web développé par Google. Il permet de créer des applications web dynamiques et réactives. Angular utilise TypeScript, un sur-ensemble typé de JavaScript, qui compile en JavaScript pur. Angular est utilisé par de nombreuses entreprises pour développer leurs applications web et mobiles. Il offre une structure solide pour organiser le code et facilite la maintenance des applications."></app-article-card>
+
+      <!-- Another example article -->
+      <app-article-card title="Les bases de TypeScript" [createdAt]="getDate(10)" author="jane smith"
+        content="TypeScript est un langage de programmation libre et open source développé par Microsoft qui a pour but d'améliorer et de sécuriser la production de code JavaScript. C'est un sur-ensemble syntaxique strict de JavaScript qui ajoute des fonctionnalités optionnelles à ce langage, notamment le typage statique et la programmation orientée objet basée sur des classes."></app-article-card>
+
+      <!-- One more example -->
+      <app-article-card title="Tailwind CSS : le framework utilitaire" [createdAt]="getDate(2)" author="alex johnson"
+        content="Tailwind CSS est un framework CSS utilitaire qui permet de construire rapidement des interfaces utilisateur personnalisées. Contrairement à d'autres frameworks comme Bootstrap ou Material UI, Tailwind ne fournit pas de composants prédéfinis, mais plutôt des classes utilitaires qui peuvent être combinées pour créer n'importe quel design."></app-article-card>
+    </div>
   </div>
 </app-protected-layout>

@@ -1,0 +1,85 @@
+---
+description: Global rules for angular project
+globs: front/**/*
+alwaysApply: true
+---
+
+rules:
+  # Règles de sécurité XSS
+  - name: "Prévention XSS"
+    patterns:
+      - "innerHTML"
+      - "bypassSecurityTrustHtml"
+      - "bypassSecurityTrustStyle"
+      - "bypassSecurityTrustScript"
+      - "bypassSecurityTrustUrl"
+      - "bypassSecurityTrustResourceUrl"
+    message: "Attention : Utilisation potentiellement dangereuse de bypass de sécurité. Vérifier que l'entrée est sûre."
+    severity: warning
+
+  # Règles pour les templates
+  - name: "Sécurité des templates"
+    patterns:
+      - "eval\\("
+      - "new Function\\("
+    message: "Évitez d'exécuter du code dynamique. Utilisez les mécanismes de binding d'Angular."
+    severity: error
+
+  # Règles pour les URLs
+  - name: "Validation des URLs"
+    patterns:
+      - "(?<!safe)Url\\s*="
+    message: "Assurez-vous de valider et d'assainir les URLs avant utilisation."
+    severity: warning
+
+  # Règles pour l'injection de dépendances
+  - name: "Injection de dépendances"
+    patterns:
+      - "constructor\\s*\\([^)]*any[^)]*\\)"
+    message: "Évitez d'utiliser 'any' dans les injections de dépendances. Spécifiez le type exact."
+    severity: warning
+
+  # Règles CSRF
+  - name: "Protection CSRF"
+    patterns:
+      - "withCredentials:\\s*true"
+    message: "Vérifiez que la protection CSRF est bien configurée pour les requêtes avec credentials."
+    severity: warning
+
+  # Règles pour les formulaires
+  - name: "Validation des formulaires"
+    patterns:
+      - "FormGroup(?!.*validators)"
+    message: "Ajoutez des validateurs appropriés aux formulaires."
+    severity: info
+
+  # Règles pour le stockage local
+  - name: "Stockage sensible"
+    patterns:
+      - "localStorage\\.setItem"
+      - "sessionStorage\\.setItem"
+    message: "Ne stockez pas de données sensibles dans le stockage local."
+    severity: warning
+
+  # Règles pour les requêtes HTTP
+  - name: "Sécurité HTTP"
+    patterns:
+      - "http\\.get\\([^)]*\\)"
+      - "http\\.post\\([^)]*\\)"
+    message: "Assurez-vous d'utiliser HTTPS et de gérer correctement les erreurs."
+    severity: info
+
+  # Règles pour les types et interfaces
+  - name: "Types et Interfaces"
+    patterns:
+      - "class.*DTO"
+      - "export.*DTO"
+    message: "Ne pas utiliser de DTOs. Utiliser des interfaces et types TypeScript."
+    severity: error
+
+settings:
+  ignoreFiles:
+    - "*.spec.ts"
+    - "*.test.ts"
+    - "node_modules/**"
+    - "dist/**" 

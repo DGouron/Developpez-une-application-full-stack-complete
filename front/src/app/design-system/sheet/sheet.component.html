@@ -1,0 +1,17 @@
+<div class="sheet-container">
+  <!-- Body du sheet avec une marge supérieure de 128px -->
+  <div class="sheet-body">
+    <ng-content select="[body]"></ng-content>
+  </div>
+
+  <!-- Footer du sheet affiché en bas à droite -->
+  <div class="sheet-footer">
+    <!-- Contenu injecté directement via ng-content -->
+    <ng-content select="[footer]"></ng-content>
+
+    <!-- Éléments de footer dynamiques basés sur footerItems -->
+    <ng-container *ngFor="let item of footerItems">
+      <ng-container *ngTemplateOutlet="item.template"></ng-container>
+    </ng-container>
+  </div>
+</div>

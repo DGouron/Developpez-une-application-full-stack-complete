@@ -15,9 +15,9 @@ import { SharedModule } from "./shared/shared.module";
 		BrowserModule,
 		HttpClientModule,
 		AppRoutingModule,
+		DesignSystemModule,
 		SharedModule,
 		PagesModule,
-		DesignSystemModule,
 	],
 	providers: [
 		{ provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },

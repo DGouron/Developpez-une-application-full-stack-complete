@@ -1,5 +1,6 @@
 import { Component, OnInit } from "@angular/core";
-import { AuthService } from "src/app/core/services/auth.service";
+import { Router } from "@angular/router";
+import { AuthService } from "../../core/services/auth.service";
 
 @Component({
 	selector: "app-account",
@@ -7,7 +8,10 @@ import { AuthService } from "src/app/core/services/auth.service";
 	styleUrls: ["./account.component.css"],
 })
 export class AccountComponent implements OnInit {
-	constructor(private authService: AuthService) {}
+	constructor(
+		private authService: AuthService,
+		private router: Router,
+	) {}
 
 	ngOnInit(): void {
 		// Vérifier l'état d'authentification

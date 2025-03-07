@@ -1,13 +1,8 @@
 ---
-description: 
-globs: 
+description: Rules for refactorisation
+globs: front/**/*
 alwaysApply: true
 ---
----
-description: 
-globs: 
----
-
 # Refactorisation rules
 
 - Always **prefer small changes** to a large project involving several files: **boy scout rule**.
