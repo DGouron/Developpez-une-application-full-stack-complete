@@ -4,6 +4,7 @@ import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
 import { AppConfig } from "../../../core/config/app.config";
 import { CoreDesignSystemModule } from "../../../design-system/core-design-system.module";
+import { CommentFormComponent } from "../../../shared/components/comment-form/comment-form.component";
 import { SharedModule } from "../../../shared/shared.module";
 
 interface Article {
@@ -22,7 +23,12 @@ interface Article {
 @Component({
 	selector: "app-article-details",
 	standalone: true,
-	imports: [CommonModule, SharedModule, CoreDesignSystemModule],
+	imports: [
+		CommonModule,
+		SharedModule,
+		CoreDesignSystemModule,
+		CommentFormComponent,
+	],
 	templateUrl: "./article-details.component.html",
 })
 export class ArticleDetailsComponent implements OnInit {
@@ -65,5 +71,10 @@ export class ArticleDetailsComponent implements OnInit {
 
 	goBack(): void {
 		this.router.navigate(["/articles"]);
+	}
+
+	onCommentAdded(): void {
+		// Rechargement des commentaires ou de l'article si nécessaire
+		// Pour l'instant, on ne fait rien car nous n'avons pas encore implémenté l'affichage des commentaires
 	}
 }

@@ -4,6 +4,7 @@ import { RouterModule } from "@angular/router";
 import { DesignSystemModule } from "../design-system/design-system.module";
 import { ArticleCardComponent } from "./components/article-card/article-card.component";
 import { AuthLayoutComponent } from "./components/auth-layout/auth-layout.component";
+import { CommentFormComponent } from "./components/comment-form/comment-form.component";
 import { HeaderComponent } from "./components/header/header.component";
 import { ProtectedLayoutComponent } from "./components/protected-layout/protected-layout.component";
 import { ThemeCardComponent } from "./components/theme-card/theme-card.component";
@@ -15,7 +16,13 @@ import { ThemeCardComponent } from "./components/theme-card/theme-card.component
 		HeaderComponent,
 		ArticleCardComponent,
 	],
-	imports: [CommonModule, RouterModule, DesignSystemModule, ThemeCardComponent],
+	imports: [
+		CommonModule,
+		RouterModule,
+		DesignSystemModule,
+		ThemeCardComponent,
+		CommentFormComponent,
+	],
 	exports: [
 		CommonModule,
 		AuthLayoutComponent,
@@ -23,6 +30,7 @@ import { ThemeCardComponent } from "./components/theme-card/theme-card.component
 		HeaderComponent,
 		ArticleCardComponent,
 		ThemeCardComponent,
+		CommentFormComponent,
 	],
 })
 export class SharedModule {}

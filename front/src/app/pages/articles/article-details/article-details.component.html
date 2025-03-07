@@ -45,7 +45,9 @@
 
         <!-- Empty section for future content -->
         <section class="py-6">
-          <!-- To be filled later -->
+          <h2 class="text-2xl font-semibold text-black mb-6">Commentaires</h2>
+          <app-comment-form [articleId]="+article.id" (commentAdded)="onCommentAdded()">
+          </app-comment-form>
         </section>
       </div>
     </div>

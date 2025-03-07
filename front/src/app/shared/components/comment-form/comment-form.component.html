@@ -1,0 +1,26 @@
+<div class="relative">
+  <!-- Error message -->
+  <div *ngIf="errorMessage" class="text-red-600 mb-2">
+    {{ errorMessage }}
+  </div>
+
+  <div class="flex items-center gap-2">
+    <!-- Textarea -->
+    <div class="flex-grow">
+      <app-textarea [(ngModel)]="commentContent" placeholder="Écrivez ici votre commentaire" [disabled]="isSubmitting">
+      </app-textarea>
+    </div>
+
+    <!-- Send button -->
+    <button (click)="submitComment()" [disabled]="isSubmitting || !commentContent.trim()"
+      class="flex items-center justify-center p-2 focus:outline-none disabled:opacity-50"
+      aria-label="Envoyer le commentaire">
+      <img src="assets/send_icon.svg" alt="Envoyer" class="w-8 h-8">
+    </button>
+  </div>
+
+  <!-- Loading indicator -->
+  <div *ngIf="isSubmitting" class="absolute inset-0 bg-white bg-opacity-60 flex items-center justify-center">
+    <div class="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-gray-900"></div>
+  </div>
+</div>
