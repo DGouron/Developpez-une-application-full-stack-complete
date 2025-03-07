@@ -1,15 +1,12 @@
 <div class="flex items-center justify-between">
-  <!-- Navigation Bar - visible uniquement en desktop -->
   <div class="hidden md:block">
     <app-navigation-bar [links]="navLinks"></app-navigation-bar>
   </div>
 
-  <!-- Menu Button - visible uniquement en mobile -->
   <div class="md:hidden">
     <app-menu-button (menuClick)="onMenuClick()"></app-menu-button>
   </div>
 
-  <!-- Account Button - visible uniquement en desktop -->
   <div class="hidden md:block">
     <app-account-button (buttonClick)="goToAccount()"></app-account-button>
   </div>

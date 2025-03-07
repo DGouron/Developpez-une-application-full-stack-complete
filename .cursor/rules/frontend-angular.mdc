@@ -1,5 +1,5 @@
 ---
-description: Global rules for angular project
+description: Best practices for Angular
 globs: front/**/*
 alwaysApply: true
 ---

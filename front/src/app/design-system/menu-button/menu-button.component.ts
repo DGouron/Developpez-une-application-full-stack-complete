@@ -1,4 +1,5 @@
 import { Component } from "@angular/core";
+import { Router } from "@angular/router";
 
 @Component({
 	selector: "app-menu-button",
@@ -7,6 +8,8 @@ import { Component } from "@angular/core";
 })
 export class MenuButtonComponent {
 	isMenuOpen = false;
+
+	constructor(private router: Router) {}
 
 	toggleMenu(): void {
 		this.isMenuOpen = !this.isMenuOpen;
@@ -17,6 +20,11 @@ export class MenuButtonComponent {
 	}
 
 	onLogout(): void {
+		this.closeMenu();
+	}
+
+	goToAccount(): void {
+		this.router.navigate(["/account"]);
 		this.closeMenu();
 	}
 }

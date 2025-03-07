@@ -1,4 +1,5 @@
 import { Component, OnInit } from "@angular/core";
+import { Router } from "@angular/router";
 import { AuthService } from "../../core/services/auth.service";
 
 @Component({
@@ -7,7 +8,10 @@ import { AuthService } from "../../core/services/auth.service";
 	styles: [],
 })
 export class ArticlesComponent implements OnInit {
-	constructor(private authService: AuthService) {}
+	constructor(
+		private authService: AuthService,
+		private router: Router,
+	) {}
 
 	ngOnInit(): void {
 		// Future initialization code can go here
@@ -29,6 +33,6 @@ export class ArticlesComponent implements OnInit {
 	}
 
 	createArticle(): void {
-		console.log("Créer un article");
+		this.router.navigate(["/articles/create"]);
 	}
 }

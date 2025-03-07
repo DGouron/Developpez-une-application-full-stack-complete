@@ -1,9 +1,11 @@
 <app-protected-layout>
-  <div content>
-    <app-button (buttonClick)="createArticle()" variant="submit" class="mb-4">
-      Créer un article
-    </app-button>
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+  <main content>
+    <header class="flex justify-between items-center mb-6">
+      <app-button (buttonClick)="createArticle()" variant="submit">
+        Créer un article
+      </app-button>
+    </header>
+    <section class="grid grid-cols-1 md:grid-cols-2 gap-4">
       <!-- Example article -->
       <app-article-card title="Introduction à Angular" [createdAt]="getDate(5)" author="john doe"
         content="Angular est un framework de développement d'applications web développé par Google. Il permet de créer des applications web dynamiques et réactives. Angular utilise TypeScript, un sur-ensemble typé de JavaScript, qui compile en JavaScript pur. Angular est utilisé par de nombreuses entreprises pour développer leurs applications web et mobiles. Il offre une structure solide pour organiser le code et facilite la maintenance des applications."></app-article-card>
@@ -15,6 +17,6 @@
       <!-- One more example -->
       <app-article-card title="Tailwind CSS : le framework utilitaire" [createdAt]="getDate(2)" author="alex johnson"
         content="Tailwind CSS est un framework CSS utilitaire qui permet de construire rapidement des interfaces utilisateur personnalisées. Contrairement à d'autres frameworks comme Bootstrap ou Material UI, Tailwind ne fournit pas de composants prédéfinis, mais plutôt des classes utilitaires qui peuvent être combinées pour créer n'importe quel design."></app-article-card>
-    </div>
-  </div>
+    </section>
+  </main>
 </app-protected-layout>
