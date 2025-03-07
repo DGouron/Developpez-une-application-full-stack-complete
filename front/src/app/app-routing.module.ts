@@ -2,6 +2,7 @@ import { NgModule } from "@angular/core";
 import { RouterModule, Routes } from "@angular/router";
 import { AuthGuard } from "./core/guards/auth.guard";
 import { AccountComponent } from "./pages/account/account.component";
+import { ArticleDetailsComponent } from "./pages/articles/article-details/article-details.component";
 import { ArticlesComponent } from "./pages/articles/articles.component";
 import { CreateArticleComponent } from "./pages/articles/create-article/create-article.component";
 import { HomeComponent } from "./pages/home/home.component";
@@ -23,6 +24,11 @@ const routes: Routes = [
 	{
 		path: "articles/create",
 		component: CreateArticleComponent,
+		canActivate: [AuthGuard],
+	},
+	{
+		path: "articles/details/:id",
+		component: ArticleDetailsComponent,
 		canActivate: [AuthGuard],
 	},
 	{

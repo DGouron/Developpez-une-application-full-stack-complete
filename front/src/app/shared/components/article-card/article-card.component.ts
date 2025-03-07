@@ -1,4 +1,5 @@
 import { Component, Input } from "@angular/core";
+import { Router } from "@angular/router";
 
 @Component({
 	selector: "app-article-card",
@@ -10,6 +11,9 @@ export class ArticleCardComponent {
 	@Input() createdAt: Date = new Date();
 	@Input() author = "";
 	@Input() content = "";
+	@Input() id = "";
+
+	constructor(private router: Router) {}
 
 	capitalizeFirstLetter(text: string): string {
 		if (!text) return "";
@@ -22,5 +26,11 @@ export class ArticleCardComponent {
 			month: "long",
 			day: "numeric",
 		});
+	}
+
+	goToDetails(): void {
+		if (this.id) {
+			this.router.navigate(["/articles/details", this.id]);
+		}
 	}
 }
