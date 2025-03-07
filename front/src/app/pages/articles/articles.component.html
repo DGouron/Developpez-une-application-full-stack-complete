@@ -14,7 +14,7 @@
     <!-- Articles grid -->
     <section *ngIf="!isLoading" class="grid grid-cols-1 md:grid-cols-2 gap-4">
       <app-article-card *ngFor="let article of articles" [id]="article.id" [title]="article.title"
-        [content]="article.content" [author]="article.author.name" [createdAt]="article.createdAtDate">
+        [content]="article.content" [author]="article.authorName" [createdAt]="article.createdAtDate">
       </app-article-card>
 
       <!-- Message when no articles -->

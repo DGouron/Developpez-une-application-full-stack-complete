@@ -4,8 +4,10 @@ import com.openclassrooms.mddapi.dtos.ArticleRequestDTO;
 import com.openclassrooms.mddapi.dtos.ArticleResponseDTO;
 import com.openclassrooms.mddapi.dtos.UserResponseDTO;
 import com.openclassrooms.mddapi.entities.Article;
+import com.openclassrooms.mddapi.entities.Theme;
 import com.openclassrooms.mddapi.entities.User;
 import com.openclassrooms.mddapi.repositories.ArticleRepository;
+import com.openclassrooms.mddapi.repositories.ThemeRepository;
 import com.openclassrooms.mddapi.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -21,6 +23,7 @@ public class ArticleService {
 
     private final ArticleRepository articleRepository;
     private final UserRepository userRepository;
+    private final ThemeRepository themeRepository;
 
     public List<ArticleResponseDTO> getAllArticles() {
         List<Article> articles = new ArrayList<>();
@@ -55,6 +58,12 @@ public class ArticleService {
         article.setTitle(articleRequestDTO.getTitle());
         article.setContent(articleRequestDTO.getContent());
         article.setAuthor(author);
+        
+        // Set theme if themeId is provided
+        if (articleRequestDTO.getThemeId() != null) {
+            Optional<Theme> theme = themeRepository.findById(articleRequestDTO.getThemeId());
+            theme.ifPresent(article::setTheme);
+        }
 
         Article savedArticle = articleRepository.save(article);
         return convertToDTO(savedArticle);
@@ -75,6 +84,14 @@ public class ArticleService {
 
         article.setTitle(articleRequestDTO.getTitle());
         article.setContent(articleRequestDTO.getContent());
+        
+        // Update theme if themeId is provided
+        if (articleRequestDTO.getThemeId() != null) {
+            Optional<Theme> theme = themeRepository.findById(articleRequestDTO.getThemeId());
+            theme.ifPresent(article::setTheme);
+        } else {
+            article.setTheme(null); // Remove theme if themeId is null
+        }
 
         Article updatedArticle = articleRepository.save(article);
         return Optional.of(convertToDTO(updatedArticle));
@@ -105,14 +122,11 @@ public class ArticleService {
         dto.setCreatedAt(article.getCreatedAt());
         dto.setUpdatedAt(article.getUpdatedAt());
         
-        UserResponseDTO authorDTO = new UserResponseDTO();
-        authorDTO.setId(article.getAuthor().getId());
-        authorDTO.setName(article.getAuthor().getName());
-        authorDTO.setEmail(article.getAuthor().getEmail());
-        authorDTO.setCreatedAt(article.getAuthor().getCreatedAt());
-        authorDTO.setUpdatedAt(article.getAuthor().getUpdatedAt());
+        dto.setAuthorName(article.getAuthor().getName());
         
-        dto.setAuthor(authorDTO);
+        if (article.getTheme() != null) {
+            dto.setThemeTitle(article.getTheme().getTitle());
+        }
         
         return dto;
     }

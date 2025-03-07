@@ -11,5 +11,6 @@ public class ArticleResponseDTO {
     private String content;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
-    private UserResponseDTO author;
+    private String authorName;
+    private String themeTitle;
 } 

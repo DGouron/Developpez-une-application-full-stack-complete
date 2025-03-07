@@ -28,11 +28,11 @@
         <!-- Article information section -->
         <section class="flex flex-col gap-12">
           <!-- Metadata line -->
-          <div class="flex flex-wrap gap-6 text-black text-xl font-normal">
+          <aside class="flex flex-wrap gap-6 text-black text-xl font-normal">
             <div>Date: {{ article.createdAt | date:'dd/MM/yyyy' }}</div>
-            <div>Auteur: {{ article.author.name }}</div>
-            <div *ngIf="article.theme">Thème: {{ article.theme.title }}</div>
-          </div>
+            <div>Auteur: {{ article.authorName }}</div>
+            <div *ngIf="article.themeTitle">Thème: {{ article.themeTitle }}</div>
+          </aside>
 
           <!-- Article content -->
           <div class="text-black text-xl font-normal">

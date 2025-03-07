@@ -7,10 +7,10 @@ interface Article {
 	id: string;
 	title: string;
 	content: string;
-	author: {
-		name: string;
-	};
+	authorName: string;
+	themeTitle: string;
 	createdAt: string;
+	updatedAt: string;
 }
 
 @Component({

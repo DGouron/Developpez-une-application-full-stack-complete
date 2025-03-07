@@ -36,6 +36,10 @@ public class Article {
     @JoinColumn(name = "user_id", nullable = false)
     private User author;
     
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "theme_id")
+    private Theme theme;
+    
     @OneToMany(mappedBy = "article", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Comment> comments = new ArrayList<>();
 
