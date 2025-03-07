@@ -1,0 +1,21 @@
+<div class="flex flex-col w-full p-4 gap-4 rounded-lg border border-gray-200">
+  <div class="flex flex-col w-full gap-4">
+    <h3 class="text-black font-bold text-base">{{ title }}</h3>
+    <div class="text-sm">
+      <span class="font-normal">Description: </span>
+      <span class="text-black font-normal">{{ description }}</span>
+    </div>
+  </div>
+
+  <div class="flex justify-center">
+    <app-button type="submit" [disabled]="isSubscribed && !isAccountContext"
+      (click)="isSubscribed && isAccountContext ? onUnsubscribe() : onSubscribe()" class="w-full">
+      <ng-container *ngIf="isSubscribed">
+        {{ isAccountContext ? 'Se désabonner' : 'Déjà abonné' }}
+      </ng-container>
+      <ng-container *ngIf="!isSubscribed">
+        S'abonner
+      </ng-container>
+    </app-button>
+  </div>
+</div>

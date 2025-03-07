@@ -1,0 +1,13 @@
+<div class="flex items-center justify-between">
+  <div class="hidden md:block">
+    <app-navigation-bar [links]="navLinks"></app-navigation-bar>
+  </div>
+
+  <div class="md:hidden">
+    <app-menu-button (menuClick)="onMenuClick()"></app-menu-button>
+  </div>
+
+  <div class="hidden md:block">
+    <app-account-button (buttonClick)="goToAccount()"></app-account-button>
+  </div>
+</div>

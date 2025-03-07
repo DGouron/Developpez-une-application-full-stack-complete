@@ -1,0 +1,26 @@
+<div>
+  <button (click)="toggleMenu()"
+    class="flex items-center justify-center w-10 h-10 rounded-full bg-gray-100 hover:bg-gray-200 transition-colors">
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+      class="w-6 h-6">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+    </svg>
+  </button>
+
+  <!-- Mobile only -->
+  <div *ngIf="isMenuOpen" class="fixed inset-0 z-40 bg-black/20" (click)="closeMenu()">
+    <div class="h-full" (click)="$event.stopPropagation()">
+      <app-sheet class="absolute">
+        <div body class="px-6 w-full">
+          <app-navigation-bar [links]="[
+            { path: '/articles', label: 'Articles' },
+            { path: '/themes', label: 'Thèmes' }
+          ]" class="flex flex-col items-end w-full gap-4" (logoutEvent)="onLogout()"></app-navigation-bar>
+        </div>
+        <div footer>
+          <app-account-button (buttonClick)="goToAccount()"></app-account-button>
+        </div>
+      </app-sheet>
+    </div>
+  </div>
+</div>

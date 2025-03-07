@@ -1,0 +1,13 @@
+<div class="sheet-container">
+  <div class="sheet-body">
+    <ng-content select="[body]"></ng-content>
+  </div>
+
+  <div class="sheet-footer">
+    <ng-content select="[footer]"></ng-content>
+
+    <ng-container *ngFor="let item of footerItems">
+      <ng-container *ngTemplateOutlet="item.template"></ng-container>
+    </ng-container>
+  </div>
+</div>

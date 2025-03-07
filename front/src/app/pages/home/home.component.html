@@ -1,10 +1,10 @@
-<div class="flex flex-col items-center justify-center h-screen w-full">
+<div class="flex flex-col items-center max-md:mt-6 md:justify-center h-screen w-full">
   <img src="/assets/logo_p6.png" alt="logo" class="w-96 h-60" />
-  <section class="flex flex-col gap-4 md:flex-row md:gap-16">
-    <app-button variant="outline" (buttonClick)="login()">
+  <section class="flex flex-col md:flex-row gap-10 md:gap-16">
+    <app-button variant="outline" (buttonClick)="login()" [fullWidth]="true">
       Se connecter
     </app-button>
-    <app-button variant="outline" (buttonClick)="register()">
+    <app-button variant="outline" (buttonClick)="register()" [fullWidth]="true">
       S'inscrire
     </app-button>
   </section>

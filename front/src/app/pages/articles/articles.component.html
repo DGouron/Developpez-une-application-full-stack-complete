@@ -1,0 +1,26 @@
+<app-protected-layout>
+  <main content>
+    <header class="flex justify-between items-center mb-6">
+      <app-button (buttonClick)="createArticle()" variant="submit">
+        Créer un article
+      </app-button>
+    </header>
+
+    <!-- Loading state -->
+    <div *ngIf="isLoading" class="flex justify-center items-center py-8">
+      <div class="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-gray-900"></div>
+    </div>
+
+    <!-- Articles grid -->
+    <section *ngIf="!isLoading" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <app-article-card *ngFor="let article of articles" [id]="article.id" [title]="article.title"
+        [content]="article.content" [author]="article.authorName" [createdAt]="article.createdAtDate">
+      </app-article-card>
+
+      <!-- Message when no articles -->
+      <p *ngIf="!isLoading && articles.length === 0" class="text-center text-gray-500 col-span-2 py-8">
+        Aucun article disponible pour le moment.
+      </p>
+    </section>
+  </main>
+</app-protected-layout>

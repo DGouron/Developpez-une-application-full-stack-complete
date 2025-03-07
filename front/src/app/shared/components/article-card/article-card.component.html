@@ -1,0 +1,19 @@
+<div class="article-card cursor-pointer" (click)="goToDetails()">
+  <div class="article-content">
+    <!-- Title -->
+    <h3 class="article-title">{{ title }}</h3>
+
+    <!-- Date and author -->
+    <div class="article-metadata">
+      <span>{{ formatDate(createdAt) }}</span>
+      <span class="separator">•</span>
+      <span>{{ capitalizeFirstLetter(author) }}</span>
+    </div>
+
+    <!-- Content -->
+    <div class="article-text">
+      <span class="content-label">Content: </span>
+      <span class="content-text">{{ content }}</span>
+    </div>
+  </div>
+</div>
