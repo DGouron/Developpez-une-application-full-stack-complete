@@ -2,8 +2,11 @@ package com.openclassrooms.mddapi.services;
 
 import com.openclassrooms.mddapi.providers.JwtProvider;
 import com.openclassrooms.mddapi.dtos.AuthRequestDTO;
+import com.openclassrooms.mddapi.dtos.ProfileRequestDTO;
+import com.openclassrooms.mddapi.dtos.UserResponseDTO;
 import com.openclassrooms.mddapi.entities.User;
 import com.openclassrooms.mddapi.repositories.UserRepository;
+import com.openclassrooms.mddapi.utils.UserMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -22,6 +25,7 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final UserMapper userMapper;
 
     @Autowired
     private final JwtProvider JwtProvider;
@@ -48,6 +52,32 @@ public class UserService {
                 .isAccountNonExpired(true)
                 .build();
         return userRepository.save(userToSave);
+    }
+
+    public UserResponseDTO updateProfile(String email, ProfileRequestDTO profileRequest) {
+        User user = userRepository.findByEmail(email);
+        if (user == null) {
+            throw new BadCredentialsException("User not found");
+        }
+
+        user.setName(profileRequest.getUsername());
+        user.setEmail(profileRequest.getEmail());
+        
+        if (profileRequest.getPassword() != null && !profileRequest.getPassword().isEmpty()) {
+            user.setPassword(passwordEncoder.encode(profileRequest.getPassword()));
+        }
+        
+        User updatedUser = userRepository.save(user);
+        return userMapper.toUserResponseDTO(updatedUser);
+    }
+
+    /**
+     * Encode le mot de passe utilisateur
+     * @param password Le mot de passe à encoder
+     * @return Le mot de passe encodé
+     */
+    public String encodePassword(String password) {
+        return passwordEncoder.encode(password);
     }
 
     /**

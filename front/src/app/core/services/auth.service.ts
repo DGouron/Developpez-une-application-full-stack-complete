@@ -12,15 +12,21 @@ import {
 } from "rxjs";
 import { AppConfig } from "../config/app.config";
 
+interface User {
+	id: string;
+	name: string;
+	email: string;
+}
+
 interface AuthResponse {
 	token: string;
 	userId: string;
 }
 
-interface UserInfo {
-	id: string;
-	name: string;
+interface ProfileUpdateRequest {
+	username: string;
 	email: string;
+	password?: string;
 }
 
 @Injectable({
@@ -28,9 +34,11 @@ interface UserInfo {
 })
 export class AuthService {
 	private readonly apiUrl = `${AppConfig.apiUrl}/auth`;
+	private currentUserSubject = new BehaviorSubject<User | null>(null);
 	private isAuthenticatedSubject = new BehaviorSubject<boolean>(false);
 	private authStatusChecked = false;
 
+	currentUser$ = this.currentUserSubject.asObservable();
 	isAuthenticated$ = this.isAuthenticatedSubject.asObservable();
 
 	constructor(
@@ -56,8 +64,7 @@ export class AuthService {
 			)
 			.pipe(
 				tap(() => {
-					this.isAuthenticatedSubject.next(true);
-					this.authStatusChecked = true;
+					this.checkAuthStatus();
 				}),
 			);
 	}
@@ -82,8 +89,22 @@ export class AuthService {
 			)
 			.pipe(
 				tap(() => {
-					this.isAuthenticatedSubject.next(true);
-					this.authStatusChecked = true;
+					this.checkAuthStatus();
+				}),
+			);
+	}
+
+	/**
+	 * Updates the user's profile
+	 * @param data ProfileUpdateRequest containing the new username, email, and password
+	 * @returns Observable of User containing the updated user information
+	 */
+	updateProfile(data: ProfileUpdateRequest): Observable<User> {
+		return this.http
+			.post<User>(`${this.apiUrl}/profile`, data, { withCredentials: true })
+			.pipe(
+				tap((user) => {
+					this.currentUserSubject.next(user);
 				}),
 			);
 	}
@@ -97,12 +118,14 @@ export class AuthService {
 			.post(`${this.apiUrl}/logout`, {}, { withCredentials: true })
 			.subscribe({
 				next: () => {
+					this.currentUserSubject.next(null);
 					this.isAuthenticatedSubject.next(false);
 					this.authStatusChecked = true;
 					this.router.navigate(["/"]);
 				},
 				error: () => {
 					// Even if the request fails, we log out the user on the client side
+					this.currentUserSubject.next(null);
 					this.isAuthenticatedSubject.next(false);
 					this.authStatusChecked = true;
 					this.router.navigate(["/"]);
@@ -114,27 +137,22 @@ export class AuthService {
 	 * Checks if the user is authenticated by calling a secure API endpoint
 	 * @returns Observable<boolean> indicating authentication status
 	 */
-	checkAuthStatus(): Observable<boolean> {
-		// If we've already checked the auth status and the user is authenticated,
-		// we can return the current state without calling the API again
-		if (this.authStatusChecked) {
-			return of(this.isAuthenticatedSubject.getValue());
-		}
-
-		return this.http
-			.get<UserInfo>(`${this.apiUrl}/me`, { withCredentials: true })
-			.pipe(
-				map(() => {
+	checkAuthStatus(): void {
+		this.http
+			.get<User>(`${this.apiUrl}/profile`, { withCredentials: true })
+			.subscribe({
+				next: (user) => {
+					this.currentUserSubject.next(user);
 					this.isAuthenticatedSubject.next(true);
 					this.authStatusChecked = true;
-					return true;
-				}),
-				catchError(() => {
+				},
+				error: () => {
+					this.currentUserSubject.next(null);
 					this.isAuthenticatedSubject.next(false);
 					this.authStatusChecked = true;
-					return of(false);
-				}),
-			);
+					this.router.navigate(["/login"]);
+				},
+			});
 	}
 
 	/**
@@ -150,6 +168,6 @@ export class AuthService {
 	 * @returns Observable<boolean> of the authentication status
 	 */
 	isAuthenticatedAsync(): Observable<boolean> {
-		return this.checkAuthStatus();
+		return this.currentUser$.pipe(map((user) => user !== null));
 	}
 }

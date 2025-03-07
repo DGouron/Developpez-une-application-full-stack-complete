@@ -48,11 +48,10 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .cors(cors -> cors.configurationSource(corsConfigurationSource())) // CORS configuration
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/auth/**").permitAll()
-                        .requestMatchers("/auth/me").authenticated()
+                        .requestMatchers("/auth/login", "/auth/register", "/auth/logout").permitAll()
+                        .requestMatchers("/auth/profile").authenticated()
                         .requestMatchers("/rentals").authenticated()
                         .requestMatchers("/rentals/**").authenticated()
-                        .requestMatchers("/messages").authenticated()
                         .requestMatchers("/themes").permitAll()
                         .requestMatchers("/articles").permitAll()
                         .requestMatchers("/articles/**").permitAll()

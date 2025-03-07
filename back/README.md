@@ -81,7 +81,7 @@ back/
 - `POST /api/auth/register` - Inscription d'un nouvel utilisateur
 - `POST /api/auth/login` - Connexion d'un utilisateur
 - `POST /api/auth/logout` - Déconnexion d'un utilisateur
-- `GET /api/auth/me` - Récupération des informations de l'utilisateur connecté
+- `GET /api/auth/profile` - Récupération des informations de l'utilisateur connecté
 
 ### Articles
 
