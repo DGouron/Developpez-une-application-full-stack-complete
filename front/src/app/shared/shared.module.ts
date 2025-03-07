@@ -6,6 +6,7 @@ import { ArticleCardComponent } from "./components/article-card/article-card.com
 import { AuthLayoutComponent } from "./components/auth-layout/auth-layout.component";
 import { HeaderComponent } from "./components/header/header.component";
 import { ProtectedLayoutComponent } from "./components/protected-layout/protected-layout.component";
+import { ThemeCardComponent } from "./components/theme-card/theme-card.component";
 
 @NgModule({
 	declarations: [
@@ -14,13 +15,14 @@ import { ProtectedLayoutComponent } from "./components/protected-layout/protecte
 		HeaderComponent,
 		ArticleCardComponent,
 	],
-	imports: [CommonModule, RouterModule, DesignSystemModule],
+	imports: [CommonModule, RouterModule, DesignSystemModule, ThemeCardComponent],
 	exports: [
 		CommonModule,
 		AuthLayoutComponent,
 		ProtectedLayoutComponent,
 		HeaderComponent,
 		ArticleCardComponent,
+		ThemeCardComponent,
 	],
 })
 export class SharedModule {}

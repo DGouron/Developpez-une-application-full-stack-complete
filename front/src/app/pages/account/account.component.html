@@ -36,5 +36,32 @@
         </app-button>
       </div>
     </form>
+
+    <!-- Separator -->
+    <div class="w-4/5 h-px bg-black mx-auto my-6"></div>
+
+    <!-- Subscriptions section -->
+    <div class="max-w-2xl mx-auto">
+      <h2 class="text-2xl font-bold text-black mb-6">Abonnements</h2>
+
+      <!-- Loading state -->
+      <div *ngIf="isLoadingSubscriptions" class="flex justify-center items-center py-8">
+        <div class="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-gray-900"></div>
+      </div>
+
+      <!-- Subscriptions grid -->
+      <section *ngIf="!isLoadingSubscriptions" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <app-theme-card *ngFor="let subscription of subscriptions" [title]="subscription.themeTitle"
+          [description]="subscription.themeDescription" [themeId]="subscription.themeId" [isSubscribed]="true"
+          [isAccountContext]="true" (unsubscribe)="unsubscribe(subscription.themeId)">
+        </app-theme-card>
+
+        <!-- Message when no subscriptions -->
+        <p *ngIf="!isLoadingSubscriptions && subscriptions.length === 0"
+          class="text-center text-gray-500 col-span-2 py-8">
+          Vous n'êtes abonné à aucun thème pour le moment.
+        </p>
+      </section>
+    </div>
   </main>
 </app-protected-layout>

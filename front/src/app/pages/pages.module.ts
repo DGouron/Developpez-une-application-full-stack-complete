@@ -9,6 +9,7 @@ import { ArticlesComponent } from "./articles/articles.component";
 import { HomeComponent } from "./home/home.component";
 import { LoginComponent } from "./login/login.component";
 import { RegisterComponent } from "./register/register.component";
+import { ThemesComponent } from "./themes/themes.component";
 
 @NgModule({
 	declarations: [
@@ -25,6 +26,7 @@ import { RegisterComponent } from "./register/register.component";
 		ReactiveFormsModule,
 		DesignSystemModule,
 		SharedModule,
+		ThemesComponent,
 	],
 	exports: [
 		HomeComponent,
@@ -32,6 +34,7 @@ import { RegisterComponent } from "./register/register.component";
 		RegisterComponent,
 		ArticlesComponent,
 		AccountComponent,
+		ThemesComponent,
 	],
 })
 export class PagesModule {}

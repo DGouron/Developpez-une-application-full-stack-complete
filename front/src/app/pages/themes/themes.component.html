@@ -1,0 +1,20 @@
+<app-protected-layout>
+  <main content>
+    <!-- Loading state -->
+    <div *ngIf="isLoading" class="flex justify-center items-center py-8">
+      <div class="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-gray-900"></div>
+    </div>
+
+    <!-- Themes grid -->
+    <section *ngIf="!isLoading" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <app-theme-card *ngFor="let theme of themes" [title]="theme.title" [description]="theme.description"
+        [themeId]="theme.id" [isSubscribed]="isSubscribed(theme.id)">
+      </app-theme-card>
+
+      <!-- Message when no themes -->
+      <p *ngIf="!isLoading && themes.length === 0" class="text-center text-gray-500 col-span-2 py-8">
+        Aucun thème disponible pour le moment.
+      </p>
+    </section>
+  </main>
+</app-protected-layout>
