@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output } from "@angular/core";
+import { Component } from "@angular/core";
 
 @Component({
 	selector: "app-menu-button",
@@ -6,7 +6,6 @@ import { Component, EventEmitter, Output } from "@angular/core";
 	styleUrls: ["./menu-button.component.css"],
 })
 export class MenuButtonComponent {
-	@Output() logoutEvent = new EventEmitter<void>();
 	isMenuOpen = false;
 
 	toggleMenu(): void {
@@ -18,7 +17,6 @@ export class MenuButtonComponent {
 	}
 
 	onLogout(): void {
-		this.logoutEvent.emit();
 		this.closeMenu();
 	}
 }

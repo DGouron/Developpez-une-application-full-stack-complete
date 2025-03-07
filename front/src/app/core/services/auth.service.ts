@@ -37,10 +37,16 @@ export class AuthService {
 		private http: HttpClient,
 		private router: Router,
 	) {
-		// Vérifie si l'utilisateur est déjà authentifié lors de l'initialisation
+		// Check if user is already authenticated during initialization
 		this.checkAuthStatus();
 	}
 
+	/**
+	 * Authenticates a user with their email and password
+	 * @param email User's email
+	 * @param password User's password
+	 * @returns Observable of AuthResponse containing token and userId
+	 */
 	login(email: string, password: string): Observable<AuthResponse> {
 		return this.http
 			.post<AuthResponse>(
@@ -56,6 +62,13 @@ export class AuthService {
 			);
 	}
 
+	/**
+	 * Registers a new user
+	 * @param name User's name
+	 * @param email User's email
+	 * @param password User's password
+	 * @returns Observable of AuthResponse containing token and userId
+	 */
 	register(
 		name: string,
 		email: string,
@@ -75,8 +88,11 @@ export class AuthService {
 			);
 	}
 
+	/**
+	 * Logs out the current user by making a request to remove the cookie
+	 * and updating the authentication state
+	 */
 	logout(): void {
-		// Appel au backend pour supprimer le cookie
 		this.http
 			.post(`${this.apiUrl}/logout`, {}, { withCredentials: true })
 			.subscribe({
@@ -86,7 +102,7 @@ export class AuthService {
 					this.router.navigate(["/"]);
 				},
 				error: () => {
-					// Même en cas d'erreur, on déconnecte l'utilisateur côté client
+					// Even if the request fails, we log out the user on the client side
 					this.isAuthenticatedSubject.next(false);
 					this.authStatusChecked = true;
 					this.router.navigate(["/"]);
@@ -94,15 +110,17 @@ export class AuthService {
 			});
 	}
 
-	// Vérifie si l'utilisateur est authentifié en appelant une API sécurisée
+	/**
+	 * Checks if the user is authenticated by calling a secure API endpoint
+	 * @returns Observable<boolean> indicating authentication status
+	 */
 	checkAuthStatus(): Observable<boolean> {
-		// Si nous avons déjà vérifié le statut d'auth et que l'utilisateur est authentifié,
-		// nous pouvons renvoyer l'état actuel sans appeler l'API à nouveau
+		// If we've already checked the auth status and the user is authenticated,
+		// we can return the current state without calling the API again
 		if (this.authStatusChecked) {
 			return of(this.isAuthenticatedSubject.getValue());
 		}
 
-		// Sinon, nous appelons l'API pour vérifier l'authentification
 		return this.http
 			.get<UserInfo>(`${this.apiUrl}/me`, { withCredentials: true })
 			.pipe(
@@ -119,12 +137,18 @@ export class AuthService {
 			);
 	}
 
-	// Méthode synchrone pour vérifier rapidement l'état d'authentification
+	/**
+	 * Synchronously checks the current authentication state
+	 * @returns boolean indicating if the user is currently authenticated
+	 */
 	isAuthenticated(): boolean {
 		return this.isAuthenticatedSubject.getValue();
 	}
 
-	// Méthode asynchrone pour vérifier l'authentification (utile pour les Guards)
+	/**
+	 * Asynchronously checks the authentication status (useful for Guards)
+	 * @returns Observable<boolean> of the authentication status
+	 */
 	isAuthenticatedAsync(): Observable<boolean> {
 		return this.checkAuthStatus();
 	}
