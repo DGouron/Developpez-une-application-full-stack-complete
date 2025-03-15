@@ -1,19 +1,20 @@
-<div class="article-card cursor-pointer" (click)="goToDetails()">
-  <div class="article-content">
+<div class="w-full h-[180px] bg-card p-4 rounded cursor-pointer flex flex-col gap-2 overflow-hidden"
+  (click)="goToDetails()">
+  <div class="flex flex-col h-full gap-2">
     <!-- Title -->
-    <h3 class="article-title">{{ title }}</h3>
+    <h3 class="!text-base !font-bold !text-black !m-0">{{ title }}</h3>
 
     <!-- Date and author -->
-    <div class="article-metadata">
+    <div class="flex items-center text-sm font-normal text-black">
       <span>{{ formatDate(createdAt) }}</span>
-      <span class="separator">•</span>
+      <span class="mx-1.5">•</span>
       <span>{{ capitalizeFirstLetter(author) }}</span>
     </div>
 
     <!-- Content -->
-    <div class="article-text">
-      <span class="content-label">Content: </span>
-      <span class="content-text">{{ content }}</span>
+    <div class="text-sm font-normal text-black overflow-hidden line-clamp-5">
+      <span class="font-medium">Content: </span>
+      <span>{{ content }}</span>
     </div>
   </div>
 </div>

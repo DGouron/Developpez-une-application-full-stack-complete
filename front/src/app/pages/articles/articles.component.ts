@@ -21,6 +21,7 @@ interface Article {
 export class ArticlesComponent implements OnInit {
 	articles: (Article & { createdAtDate: Date })[] = [];
 	isLoading = false;
+	sortDirection: "asc" | "desc" = "desc"; // Default sort direction is descending
 
 	constructor(
 		private router: Router,
@@ -39,12 +40,31 @@ export class ArticlesComponent implements OnInit {
 					...article,
 					createdAtDate: new Date(article.createdAt),
 				}));
+				this.sortArticles(); // Sort articles after loading
 				this.isLoading = false;
 			},
 			error: (error) => {
 				console.error("Error loading articles:", error);
 				this.isLoading = false;
 			},
+		});
+	}
+
+	/**
+	 * Toggles the sort direction and sorts the articles
+	 */
+	toggleSortDirection(): void {
+		this.sortDirection = this.sortDirection === "desc" ? "asc" : "desc";
+		this.sortArticles();
+	}
+
+	/**
+	 * Sorts the articles by date according to the current sort direction
+	 */
+	private sortArticles(): void {
+		this.articles.sort((a, b) => {
+			const comparison = b.createdAtDate.getTime() - a.createdAtDate.getTime();
+			return this.sortDirection === "desc" ? comparison : -comparison;
 		});
 	}
 

@@ -42,10 +42,12 @@
       </div>
     </div>
 
-    <app-button type="submit" variant="submit" [disabled]="registerForm.invalid || isLoading" [isLoading]="isLoading"
-      [fullWidth]="true">
-      S'inscrire
-    </app-button>
+    <div class="flex justify-center items-center w-full">
+      <app-button type="submit" variant="submit" [disabled]="registerForm.invalid || isLoading" [isLoading]="isLoading"
+        [fullWidth]="false">
+        S'inscrire
+      </app-button>
+    </div>
 
     <div class="text-red-500 text-center text-sm mt-2" *ngIf="errorMessage">
       {{ errorMessage }}

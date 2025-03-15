@@ -1,9 +1,9 @@
-<nav class="flex flex-col md:flex-row md:gap-4 items-center">
+<nav class="flex flex-col md:flex-row md:gap-6 items-center mr-4">
   <app-button variant="inline" (buttonClick)="logout()">Se déconnecter</app-button>
   <a *ngFor="let link of links" [routerLink]="link.path" [ngClass]="{
       'text-primary': isActive(link.path),
       'text-black': !isActive(link.path)
-    }" class="px-4 py-2 rounded-md font-medium no-underline transition-colors">
+    }" class="py-2 font-medium no-underline transition-colors text-xl">
     {{ link.label }}
   </a>
 </nav>
