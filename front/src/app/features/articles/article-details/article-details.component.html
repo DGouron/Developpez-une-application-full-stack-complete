@@ -1,6 +1,6 @@
 <app-protected-layout>
-  <main content class="container mx-auto px-4 py-8">
-    <div *ngIf="isLoading" class="flex justify-center items-center py-8">
+  <main content class="container mx-auto px-4 pb-8">
+    <div *ngIf="isLoading" class="flex justify-center items-center pb-8">
       <div class="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-gray-900"></div>
     </div>
 
@@ -8,12 +8,13 @@
       {{ errorMessage }}
     </div>
 
+    <div class="cursor-pointer absolute top-[75px] left-4 block md:hidden mb-12" (click)="goBack()">
+      <img src="/assets/back_arrow.svg" alt="back arrow" class="w-[24px] h-[24px]" />
+    </div>
+
     <div *ngIf="!isLoading && !errorMessage && article" class="max-w-3xl mx-auto">
       <header class="flex items-center justify-start gap-4 mb-6">
-        <button (click)="goBack()" class="flex items-center justify-center">
-          <img src="/assets/back_arrow.svg" alt="back arrow" class="w-[24px] h-[24px]" />
-        </button>
-        <h1 class="!text-2xl !font-semibold !text-black">{{ article.title }}</h1>
+        <h1 class="text-2xlxl !font-bold absolute left-1/2 transform -translate-x-1/2">{{ article.title }}</h1>
       </header>
 
       <div class="flex flex-col gap-6">

@@ -1,4 +1,4 @@
-<nav class="flex flex-col md:flex-row md:gap-6 items-center mr-4">
+<nav class="flex flex-col md:flex-row md:gap-6 items-end md:items-center md-0 md:mr-4">
   <app-button variant="inline" (buttonClick)="logout()">Se déconnecter</app-button>
   <a *ngFor="let link of links" [routerLink]="link.path" [ngClass]="{
       'text-primary': isActive(link.path),

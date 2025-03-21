@@ -1,9 +1,10 @@
-<div class="sheet-container">
-  <div class="sheet-body">
+<div
+  class="bg-white flex flex-col items-end justify-start fixed right-0 top-0 z-50 w-[65%] h-full border-l border-black">
+  <div class="mt-12 !px-0 !mr-0">
     <ng-content select="[body]"></ng-content>
   </div>
 
-  <div class="sheet-footer">
+  <div class="absolute bottom-1 right-1">
     <ng-content select="[footer]"></ng-content>
 
     <ng-container *ngFor="let item of footerItems">
