@@ -121,8 +121,24 @@ export class RegisterComponent implements OnInit {
 			this.authService.register(name, email, password).subscribe({
 				next: () => {
 					this.isLoading = false;
-					// Rediriger vers la page des articles après inscription
-					this.router.navigate(["/articles"]);
+					// Login the user after successful registration
+					this.authService.login(email, password).subscribe({
+						next: () => {
+							// Rediriger vers la page des articles après inscription et connexion
+							this.router.navigate(["/articles"]);
+						},
+						error: (loginError: HttpErrorResponse) => {
+							this.isLoading = false;
+							if (loginError.error?.message) {
+								this.errorMessage = loginError.error.message;
+							} else {
+								this.errorMessage =
+									"Inscription réussie mais erreur lors de la connexion automatique. Veuillez vous connecter manuellement.";
+								// Redirect to login page
+								this.router.navigate(["/login"]);
+							}
+						},
+					});
 				},
 				error: (error: HttpErrorResponse) => {
 					this.isLoading = false;

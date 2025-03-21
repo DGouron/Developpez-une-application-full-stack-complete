@@ -8,7 +8,7 @@ export interface SheetFooterItem {
 @Component({
 	selector: "app-sheet",
 	templateUrl: "./sheet.component.html",
-	styleUrls: ["./sheet.component.css"],
+	styleUrls: [],
 })
 export class SheetComponent {
 	@Input() footerItems: SheetFooterItem[] = [];

@@ -1,53 +1,39 @@
 <app-protected-layout>
   <main content class="container mx-auto px-4 py-8">
-    <!-- Loading state -->
     <div *ngIf="isLoading" class="flex justify-center items-center py-8">
       <div class="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-gray-900"></div>
     </div>
 
-    <!-- Error message -->
     <div *ngIf="!isLoading && errorMessage" class="text-center text-red-600 py-8">
       {{ errorMessage }}
     </div>
 
-    <!-- Article content -->
     <div *ngIf="!isLoading && !errorMessage && article" class="max-w-3xl mx-auto">
-      <!-- Header with back button and title -->
-      <header class="flex items-center gap-4 mb-6">
+      <header class="flex items-center justify-start gap-4 mb-6">
         <button (click)="goBack()" class="flex items-center justify-center">
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-            stroke="currentColor" class="w-6 h-6">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
-          </svg>
+          <img src="/assets/back_arrow.svg" alt="back arrow" class="w-[24px] h-[24px]" />
         </button>
-        <h1 class="text-2xl font-semibold text-black">{{ article.title }}</h1>
+        <h1 class="!text-2xl !font-semibold !text-black">{{ article.title }}</h1>
       </header>
 
-      <!-- Main content with sections -->
-      <div class="flex flex-col gap-12">
-        <!-- Article information section -->
-        <section class="flex flex-col gap-12">
-          <!-- Metadata line -->
-          <aside class="flex flex-wrap gap-6 text-black text-xl font-normal">
+      <div class="flex flex-col gap-6">
+        <section class="flex flex-col gap-6 md:gap-12">
+          <aside class="flex flex-wrap gap-4 md:gap-6 text-black text-xl font-normal">
             <div>Date: {{ article.createdAt | date:'dd/MM/yyyy' }}</div>
             <div>Auteur: {{ article.authorName }}</div>
             <div *ngIf="article.themeTitle">Thème: {{ article.themeTitle }}</div>
           </aside>
 
-          <!-- Article content -->
           <div class="text-black text-xl font-normal">
             Content: {{ article.content }}
           </div>
         </section>
 
-        <!-- Separator -->
         <div class="w-full h-px bg-black"></div>
 
-        <!-- Empty section for future content -->
-        <section class="py-6">
-          <h2 class="text-2xl font-semibold text-black mb-6">Commentaires</h2>
+        <section>
+          <h2 class="!text-xl !font-normal !text-black max-md:!mb-4 md:!mb-6">Commentaires</h2>
 
-          <!-- Liste des commentaires -->
           <div *ngIf="!isLoadingComments" class="space-y-4">
             <div *ngIf="comments.length === 0" class="text-gray-500 text-center py-4">
               Aucun commentaire pour le moment.
@@ -58,12 +44,10 @@
             </app-comment-card>
           </div>
 
-          <!-- État de chargement des commentaires -->
           <div *ngIf="isLoadingComments" class="flex justify-center items-center py-4">
             <div class="animate-spin rounded-full h-6 w-6 border-t-2 border-b-2 border-gray-900"></div>
           </div>
 
-          <!-- Formulaire d'ajout de commentaire -->
           <div class="mb-8">
             <app-comment-form [articleId]="+article.id" (commentAdded)="onCommentAdded()">
             </app-comment-form>

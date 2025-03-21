@@ -1,6 +1,11 @@
 HELP.md
+
 target/
+# Conserver uniquement le wrapper Maven mais ignorer le reste de .mvn
+/.mvn/
+!.mvn/wrapper/
 !.mvn/wrapper/maven-wrapper.jar
+!.mvn/wrapper/maven-wrapper.properties
 !**/src/main/**/target/
 !**/src/test/**/target/
 

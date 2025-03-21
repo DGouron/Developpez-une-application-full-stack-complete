@@ -4,7 +4,7 @@ import { Router } from "@angular/router";
 @Component({
 	selector: "app-menu-button",
 	templateUrl: "./menu-button.component.html",
-	styleUrls: ["./menu-button.component.css"],
+	styleUrls: [],
 })
 export class MenuButtonComponent {
 	isMenuOpen = false;

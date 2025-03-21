@@ -22,7 +22,7 @@ interface Subscription {
 @Component({
 	selector: "app-account",
 	templateUrl: "./account.component.html",
-	styleUrls: ["./account.component.css"],
+	styleUrls: [],
 	standalone: false,
 })
 export class AccountComponent implements OnInit {
