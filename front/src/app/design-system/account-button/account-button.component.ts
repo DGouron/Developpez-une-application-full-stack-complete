@@ -3,7 +3,7 @@ import { Component, EventEmitter, Output } from "@angular/core";
 @Component({
 	selector: "app-account-button",
 	templateUrl: "./account-button.component.html",
-	styleUrls: ["./account-button.component.css"],
+	styleUrls: [],
 })
 export class AccountButtonComponent {
 	@Output() buttonClick = new EventEmitter<void>();

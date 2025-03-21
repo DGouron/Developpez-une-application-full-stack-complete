@@ -14,7 +14,7 @@ export interface NavLink {
 @Component({
 	selector: "app-navigation-bar",
 	templateUrl: "./navigation-bar.component.html",
-	styleUrls: ["./navigation-bar.component.css"],
+	styleUrls: [],
 })
 export class NavigationBarComponent {
 	@Input() links: NavLink[] = [];
