@@ -11,7 +11,7 @@
   <div *ngIf="isMenuOpen" class="fixed inset-0 z-40 bg-black/20" (click)="closeMenu()">
     <div class="h-full" (click)="$event.stopPropagation()">
       <app-sheet class="absolute">
-        <div body class="px-6 w-full">
+        <div body class=" pr-1 w-full">
           <app-navigation-bar [links]="[
             { path: '/articles', label: 'Articles' },
             { path: '/themes', label: 'Thèmes' }
