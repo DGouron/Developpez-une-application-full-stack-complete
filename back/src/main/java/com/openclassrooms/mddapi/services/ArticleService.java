@@ -2,14 +2,12 @@ package com.openclassrooms.mddapi.services;
 
 import com.openclassrooms.mddapi.dtos.ArticleRequestDTO;
 import com.openclassrooms.mddapi.dtos.ArticleResponseDTO;
-import com.openclassrooms.mddapi.dtos.UserResponseDTO;
 import com.openclassrooms.mddapi.entities.Article;
 import com.openclassrooms.mddapi.entities.Theme;
 import com.openclassrooms.mddapi.entities.User;
 import com.openclassrooms.mddapi.repositories.ArticleRepository;
 import com.openclassrooms.mddapi.repositories.ThemeRepository;
 import com.openclassrooms.mddapi.repositories.UserRepository;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
