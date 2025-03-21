@@ -32,17 +32,8 @@ public class UserService {
     @Autowired
     private AuthenticationManager authenticationManager;
 
-    // Méthode pour vérifier si l'utilisateur existe déjà
-    public boolean userExists(String email) {
-        return userRepository.findByEmail(email) != null;
-    }
-
-    public Optional<User> findUserById(Long id) {
-        return userRepository.findById(id);
-    }
-
     public User saveUser(User user) {
-        var userToSave = User.builder()
+        User userToSave = User.builder()
                 .name(user.getName())
                 .email(user.getEmail())
                 .password(passwordEncoder.encode(user.getPassword()))
@@ -71,16 +62,7 @@ public class UserService {
         return userMapper.toUserResponseDTO(updatedUser);
     }
 
-    /**
-     * Encode le mot de passe utilisateur
-     * @param password Le mot de passe à encoder
-     * @return Le mot de passe encodé
-     */
-    public String encodePassword(String password) {
-        return passwordEncoder.encode(password);
-    }
-
-    /**
+       /**
      * Génère un token JWT pour un utilisateur donné
      * @param user L'utilisateur pour lequel générer le token
      * @return Le token JWT généré
@@ -116,8 +98,7 @@ public class UserService {
             return token;
 
         } catch (BadCredentialsException e) {
-            // Retourner null si les identifiants sont incorrects
-            return null;
+            throw new BadCredentialsException(e.getMessage());
         }
     }
 }

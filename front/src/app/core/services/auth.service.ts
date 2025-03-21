@@ -150,9 +150,31 @@ export class AuthService {
 					this.currentUserSubject.next(null);
 					this.isAuthenticatedSubject.next(false);
 					this.authStatusChecked = true;
-					this.router.navigate(["/login"]);
 				},
 			});
+	}
+
+	/**
+	 * Forces a refresh of the authentication status by calling the API
+	 * @returns Observable<boolean> of the authentication status
+	 */
+	refreshAuthStatus(): Observable<boolean> {
+		return this.http
+			.get<User>(`${this.apiUrl}/profile`, { withCredentials: true })
+			.pipe(
+				map((user) => {
+					this.currentUserSubject.next(user);
+					this.isAuthenticatedSubject.next(true);
+					this.authStatusChecked = true;
+					return true;
+				}),
+				catchError(() => {
+					this.currentUserSubject.next(null);
+					this.isAuthenticatedSubject.next(false);
+					this.authStatusChecked = true;
+					return of(false);
+				}),
+			);
 	}
 
 	/**

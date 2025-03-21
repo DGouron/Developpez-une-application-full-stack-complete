@@ -23,8 +23,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
@@ -47,9 +45,7 @@ public class AuthController {
     @ApiResponse(responseCode = "401", description = "Unauthorized, user not authenticated")
     @GetMapping("/profile")
     public ResponseEntity<UserResponseDTO> getProfile() {
-        String userMail = SecurityContextHolder.getContext().getAuthentication().getName();
-
-        User user = userRepository.findByEmail(userMail);
+        User user = userRepository.findByEmail(SecurityContextHolder.getContext().getAuthentication().getName());
         if (user == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
         }
@@ -83,15 +79,17 @@ public class AuthController {
     @ApiResponse(responseCode = "500", description = "Internal server error",
             content = @Content(mediaType = "application/json", schema = @Schema(implementation = AuthResponseDTO.class)))
     @PostMapping("/login")
-    public ResponseEntity<AuthResponseDTO> login(@RequestBody AuthRequestDTO authRequest) {
+    public ResponseEntity<AuthResponseDTO> login(@RequestBody AuthRequestDTO authRequest, HttpServletResponse response) {
         try {
             String jwt = userService.authenticate(authRequest);
-            System.out.println(jwt);
             if (jwt == null) {
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                         .body(new AuthResponseDTO("Échec de l'authentification, utilisateur ou mot de passe incorrect"));
             }
 
+            // Set JWT in a cookie
+            cookieService.createJwtCookie(response, jwt);
+            
             AuthResponseDTO authSuccess = new AuthResponseDTO(jwt);
             return ResponseEntity.ok(authSuccess);
 

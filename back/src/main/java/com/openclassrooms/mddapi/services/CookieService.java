@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 public class CookieService {
 
     private static final String JWT_COOKIE_NAME = "auth_token";
-    private static final int COOKIE_MAX_AGE = 86400; // 24 heures en secondes
+    private static final int COOKIE_MAX_AGE = 86400 * 7; // 7 jours en secondes
 
     @Value("${app.cookie.domain:localhost}")
     private String cookieDomain;
@@ -30,6 +30,13 @@ public class CookieService {
         cookie.setPath("/");
         cookie.setDomain(cookieDomain);
         cookie.setSecure(secure); // true en production avec HTTPS
+        
+        // Set SameSite attribute to 'Lax' to allow cookies in cross-origin requests
+        // Spring Boot doesn't have direct support for SameSite, so we set it via header
+        String sameSiteHeader = secure ? "Set-Cookie: " + JWT_COOKIE_NAME + "=" + token + "; SameSite=None" : 
+                                         "Set-Cookie: " + JWT_COOKIE_NAME + "=" + token + "; SameSite=Lax";
+        response.setHeader("Set-Cookie", sameSiteHeader);
+        
         response.addCookie(cookie);
     }
 
@@ -44,6 +51,12 @@ public class CookieService {
         cookie.setPath("/");
         cookie.setDomain(cookieDomain);
         cookie.setSecure(secure);
+        
+        // Set SameSite attribute to 'Lax' for consistency
+        String sameSiteHeader = secure ? "Set-Cookie: " + JWT_COOKIE_NAME + "=; SameSite=None" : 
+                                         "Set-Cookie: " + JWT_COOKIE_NAME + "=; SameSite=Lax";
+        response.setHeader("Set-Cookie", sameSiteHeader);
+        
         response.addCookie(cookie);
     }
 
