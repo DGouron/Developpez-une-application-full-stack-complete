@@ -1,13 +1,13 @@
 <app-protected-layout>
-  <main content class="container mx-auto px-4 py-8">
+  <main content class="container mx-auto px-4 pb-8 pt-4">
+    <div class="cursor-pointer absolute top-[75px] left-4 block md:hidden mb-12" (click)="goBack()">
+      <img src="/assets/back_arrow.svg" alt="back arrow" class="w-[24px] h-[24px]" />
+    </div>
     <header class="flex items-center justify-start gap-4 mb-6">
-      <button (click)="goBack()" class="flex items-center justify-center">
-        <img src="/assets/back_arrow.svg" alt="back arrow" class="w-[24px] h-[24px]" />
-      </button>
-      <h1 class="text-2xlxl font-bold absolute left-1/2 transform -translate-x-1/2">Créer un nouvel article</h1>
+      <h1 class="text-2xlxl !font-bold absolute left-1/2 transform -translate-x-1/2">Créer un nouvel article</h1>
     </header>
 
-    <form [formGroup]="articleForm" (ngSubmit)="onSubmit()" class="max-w-2xl mx-auto flex flex-col gap-4">
+    <form [formGroup]="articleForm" (ngSubmit)="onSubmit()" class="max-w-2xl mx-auto flex flex-col gap-4 pt-4">
       <div class="space-y-2">
         <select formControlName="themeId" class="w-full p-2 border rounded-lg bg-white">
           <option value="" disabled>Sélectionner un thème</option>
